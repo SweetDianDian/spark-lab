@@ -11,7 +11,10 @@ export function completeLesson(id: string) { const completed = getCompleted(); i
 export const getRuns = () => readStorage<SavedRun[]>('runs', []);
 export function saveRun(run: SavedRun) { return writeStorage('runs', [run, ...getRuns().filter(item => item.id !== run.id)].slice(0, 15)); }
 export function deleteRun(id: string) { writeStorage('runs', getRuns().filter(item => item.id !== id)); }
-export const getLanguage = () => readStorage<Language>('language', 'typescript');
+export const getLanguage = (): Language => {
+  const stored = readStorage<unknown>('language', 'typescript');
+  return stored === 'python' || stored === 'javascript' ? stored : 'typescript';
+};
 export const setLanguage = (language: Language) => writeStorage('language', language);
 export const getDraft = (id: string, language: Language, fallback: string) => readStorage<string>(`draft:${id}:${language}`, fallback);
 export const setDraft = (id: string, language: Language, code: string) => writeStorage(`draft:${id}:${language}`, code);

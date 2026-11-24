@@ -8,6 +8,7 @@ import LearningDiagram from './LearningDiagram';
 import { agentFrames, agentOutcome, apiCallFrames, apiOutputCase, comparisonGuides, contextFrames, contextPayload, samplingCandidates, samplingCase, samplingFrames, theaterReturnPath, theaterScenes, toolExecutionCase, toolFrames, validateOperands } from '../data/theater';
 import type { TheaterFrame, TheaterSceneId } from '../data/theater';
 import { getLearningPathItem, getPrincipleDefinition, theaterFrameId } from '../data/learning-path';
+import { practiceAfterComparison } from '../lib/chapter-navigation';
 import { getLessonJourney } from '../data/journey';
 import { getPrincipleProgress, markPrincipleSeen, readLearningState, subscribeLearningState } from '../lib/learning-state';
 import './principle-theater.css';
@@ -130,8 +131,8 @@ function PrincipleExperiment({ scene, back, selectScene, focusKnowledge }: { sce
   return <div className="cinema-layout">
     <aside className="cinema-sidebar" aria-label="知识与学习步骤">
       <div className="cinema-sidebar-head">
-      <Button type="link" className="cinema-back" icon={<ArrowLeftOutlined/>} onClick={() => navigate(back)}>{back.startsWith('/lab/') ? back.includes('replay=') ? '返回实验回放' : '返回代码实验' : back === '/' ? '返回首页' : '返回学习路线'}</Button>
-      <div className="cinema-knowledge-select"><Typography.Text type="secondary">当前知识</Typography.Text><Select ref={knowledgeRef} aria-label="选择学习的知识" value={scene.id} onChange={selectScene} options={theaterScenes.map(item => ({ value: item.id, label: item.title }))}/></div>
+      <Button type="link" className="cinema-back" icon={<ArrowLeftOutlined/>} onClick={() => navigate(back)}>{back.startsWith('/learn/') ? '返回本章动图' : back.startsWith('/lab/') ? back.includes('replay=') ? '返回实验回放' : '返回代码实验' : back === '/' ? '返回首页' : '返回学习路线'}</Button>
+      <div className="cinema-knowledge-select"><Typography.Text type="secondary">翻到这一章</Typography.Text><Select ref={knowledgeRef} aria-label="选择学习的知识" value={scene.id} onChange={selectScene} options={theaterScenes.map(item => ({ value: item.id, label: item.title }))}/></div>
       <div className="cinema-learning-progress">
         <Typography.Text>原理已浏览 {progress.viewedCount} / {progress.totalCount}</Typography.Text>
         <Progress percent={progress.totalCount ? progress.viewedCount / progress.totalCount * 100 : 0} showInfo={false} status="normal" aria-label={`原理已浏览 ${progress.viewedCount} / ${progress.totalCount}`}/>
@@ -141,21 +142,21 @@ function PrincipleExperiment({ scene, back, selectScene, focusKnowledge }: { sce
       </div>
       <div className="cinema-sidebar-scroll" role="region" aria-label="可滚动的原理步骤目录" tabIndex={0}>
       <Collapse className="cinema-step-directory" ghost defaultActiveKey={['steps']} items={[{
-        key: 'steps', label: `逐步解释 · ${progress.completed ? '已全部浏览' : `${progress.remainingFrameIds.length} 步未看`}`,
-        children: <><Steps orientation="vertical" size="small" current={definition.frames.findIndex(item => item.id === frameId)} onChange={index => jumpToFrame(definition.frames[index].id)} items={definition.frames.map(item => {
+        key: 'steps', label: `本章目录 · ${progress.completed ? '已全部浏览' : `${progress.remainingFrameIds.length} 步未看`}`,
+        children: <><Steps className="cinema-directory-tabs" classNames={{ itemWrapper: 'cinema-directory-page', itemTitle: 'cinema-directory-page-title', itemContent: 'cinema-directory-page-note', itemRail: 'cinema-directory-rule' }} orientation="vertical" size="small" current={definition.frames.findIndex(item => item.id === frameId)} onChange={index => jumpToFrame(definition.frames[index].id)} items={definition.frames.map(item => {
           const seen = progress.seenFrameIds.includes(item.id);
           return { key: item.id, title: item.title, content: seen ? '已看' : '未看', status: item.id === frameId ? 'process' as const : seen ? 'finish' as const : 'wait' as const };
-        })}/><Typography.Paragraph className="cinema-progress-note" type="secondary">已浏览只表示看过解释步骤，不代表掌握，也不会替代代码实操。</Typography.Paragraph></>,
+        })}/><Typography.Paragraph className="cinema-progress-note" type="secondary">看过不等于掌握；代码实操另行记录。</Typography.Paragraph></>,
       }]}/>
       {progress.firstUnseenFrameId && <Button type="link" className="cinema-resume" onClick={() => jumpToFrame(progress.firstUnseenFrameId!)}>继续未看的解释</Button>}
       {saveError && <Alert type="warning" showIcon title="这次浏览进度未能保存" description="请检查浏览器存储。"/>}
       </div>
     </aside>
     <div className="cinema-main">
-      <header className="cinema-heading"><Typography.Text type="secondary">{scene.title} · 对照实验</Typography.Text><Typography.Title level={3}>{scene.question}</Typography.Title><Typography.Text type="secondary">{scene.note}</Typography.Text></header>
+      <header className="cinema-heading"><div className="cinema-heading-meta"><Tag className="cinema-manual-stamp">原理手册</Tag><Typography.Text>{scene.title}</Typography.Text></div><Typography.Title level={3}>{scene.question}</Typography.Title><Typography.Text type="secondary">{scene.note}</Typography.Text></header>
       <Card className="cinema-screen" aria-label={`${scene.title}因果对照`} styles={{ body: { height: '100%', padding: 0 } }}>
         <div className="cinema-content-scroll" ref={contentRef} role="region" aria-label="可滚动的原理讲解内容" tabIndex={0}>
-        <div className="cinema-task"><Typography.Text strong>动手试一次</Typography.Text><p>{guide.task}</p></div>
+        <div className="cinema-task"><Typography.Text strong>只改这一处</Typography.Text><p>{guide.task}</p></div>
         <div className="cinema-intervention" aria-label="只改变一个实验条件">
           {scene.id === 'api-call' && <Toggle label="在 B 显示回答" checked={showOutput} onChange={value => { setShowOutput(value); intervene(3); }}/>}
           {scene.id === 'context' && <Toggle label="B 包含“我喜欢做饭”的背景" checked={background} onChange={value => { setBackground(value); intervene(1); }}/>}
@@ -163,8 +164,8 @@ function PrincipleExperiment({ scene, back, selectScene, focusKnowledge }: { sce
           {scene.id === 'agent' && <div className="cinema-range-label"><Typography.Text>B 的模型调用上限 <strong>{maxRounds} 轮</strong></Typography.Text><Slider ariaLabelForHandle="模型调用轮数上限" min={1} max={5} step={1} value={maxRounds} marks={{ 1: '1 轮', 5: '5 轮' }} tooltip={{ formatter: value => `${value} 轮` }} onChange={value => { setMaxRounds(value); intervene(0); }}/></div>}
           {scene.id === 'sampling' && <><div className="cinema-range-label"><Typography.Text>B 的温度 <strong>{temperature.toFixed(1)}</strong></Typography.Text><Slider ariaLabelForHandle="采样温度" min={0.2} max={2} step={0.1} value={temperature} marks={{ 0.2: '更集中', 2: '更分散' }} tooltip={{ formatter: value => value?.toFixed(1) }} onChange={value => { setTemperature(value); intervene(1); }}/></div><Typography.Text type="secondary">共同随机落点 <strong>u = 0.80</strong></Typography.Text></>}
         </div>
-        <Typography.Paragraph className="cinema-constant" type="secondary">保持不变：{guide.unchanged}</Typography.Paragraph>
-        <div className="cinema-observation" aria-live="polite" aria-atomic="true"><Alert type={scene.id === 'tools' && toolCase.status === 'rejected' ? 'warning' : 'info'} showIcon title="当前观察" description={observation}/></div>
+        <Typography.Paragraph className="cinema-constant" type="secondary">其余照旧：{guide.unchanged}</Typography.Paragraph>
+        <div className="cinema-observation" aria-live="polite" aria-atomic="true"><Alert type={scene.id === 'tools' && toolCase.status === 'rejected' ? 'warning' : 'info'} showIcon title="现在看到的" description={observation}/></div>
         <div className="cinema-comparison-stage">
           {scene.id === 'api-call' && <ApiComparison prompt={apiPrompt} showOutput={showOutput}/>}
           {scene.id === 'context' && <ContextComparison background={background}/>}
@@ -174,11 +175,11 @@ function PrincipleExperiment({ scene, back, selectScene, focusKnowledge }: { sce
         </div>
         <div className="cinema-why"><Typography.Text strong>为什么会这样</Typography.Text><p>{guide.why}</p></div>
         <div className="cinema-explanation" ref={stageRef}>
-          <div className="cinema-explanation-title"><Typography.Text type="secondary">逐步解释当前结果</Typography.Text><Typography.Text type="secondary">第 {position + 1} / {frames.length} 步</Typography.Text></div>
+          <div className="cinema-explanation-title"><Typography.Text>把这一步拆开看</Typography.Text><Typography.Text type="secondary">第 {position + 1} / {frames.length} 步</Typography.Text></div>
           <MechanismDiagram sceneId={scene.id} frame={frame} showOutput={showOutput} executeTool={executeTool} valid={operands.valid}/>
           <div className="cinema-subtitle" aria-live="polite"><Typography.Title level={5}>{frame.title}</Typography.Title><Typography.Paragraph type="secondary">{frame.narration}</Typography.Paragraph>{scene.id === 'agent' && frame.payload && <Typography.Text code>{frame.payload}</Typography.Text>}</div>
         </div>
-        <div className="cinema-afterword"><div><Typography.Text type="secondary">{scene.note}</Typography.Text>{journey && <Typography.Paragraph className="cinema-project-link" type="secondary">在学习助手中：{journey.projectContribution}</Typography.Paragraph>}</div>{learningItem.practiceAvailability === 'available' ? <Button icon={<CodeOutlined/>} onClick={() => navigate(`/lab/${scene.lesson}`)}>去代码里验证</Button> : <Button onClick={() => navigate(`/explore?at=${scene.lesson}`)}>实操尚未开放 · 查看章节</Button>}</div>
+        <div className="cinema-afterword"><div><Typography.Text type="secondary">{scene.note}</Typography.Text>{journey && <Typography.Paragraph className="cinema-project-link" type="secondary">在学习助手中：{journey.projectContribution}</Typography.Paragraph>}</div>{learningItem.practiceAvailability === 'available' ? <Button icon={<CodeOutlined/>} onClick={() => navigate(practiceAfterComparison(scene.lesson,back))}>去代码里验证</Button> : <Button onClick={() => navigate(`/explore?at=${scene.lesson}`)}>实操尚未开放 · 查看章节</Button>}</div>
         </div>
       </Card>
       <Card className="cinema-player" size="small" aria-label="原理演示控制"><div className="cinema-player-layout"><Space className="cinema-transport"><Button aria-label="上一步" disabled={position === 0} icon={<StepBackwardOutlined/>} onClick={() => move(-1)}>上一步</Button><Button type="primary" className="cinema-play-button" icon={playing ? <PauseOutlined/> : atEnd ? <ReloadOutlined/> : <PlayCircleOutlined/>} onClick={play}>{playing ? '暂停' : atEnd ? '重新解释' : '自动讲解'}</Button><Button aria-label="下一步" disabled={atEnd} icon={<StepForwardOutlined/>} iconPlacement="end" onClick={() => move(1)}>下一步</Button></Space><div className="cinema-playback-position"><Slider min={0} max={frames.length - 1} step={1} value={position} ariaLabelForHandle="选择解释步骤" ariaValueTextFormatterForHandle={value => `第 ${value + 1} 步，共 ${frames.length} 步：${frames[value].title}`} tooltip={{ formatter: value => value === undefined ? null : frames[value].title }} onChange={value => { intervene(value); revealExplanation(); }}/><Typography.Text type="secondary">{position + 1} / {frames.length}</Typography.Text></div></div></Card>
@@ -191,7 +192,7 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
 }
 
 function CasePanel({ name, title, children, baseline = false }: { name: string; title: string; children: ReactNode; baseline?: boolean }) {
-  return <Card size="small" className="cinema-case" title={<div className="cinema-case-title"><Typography.Text type="secondary">{name}</Typography.Text><Typography.Text strong>{title}</Typography.Text></div>} extra={<Tag color={baseline ? 'default' : 'blue'}>{baseline ? 'A' : 'B'}</Tag>}>{children}</Card>;
+  return <Card size="small" className={`cinema-case ${baseline ? 'cinema-case-baseline' : 'cinema-case-trial'}`} data-comparison-case={baseline ? 'A' : 'B'} title={<div className="cinema-case-title"><Typography.Text>{name}</Typography.Text><Typography.Text strong>{title}</Typography.Text></div>} extra={<Tag className="cinema-case-label">{baseline ? '保留原样' : '试验组'}</Tag>}>{children}</Card>;
 }
 function DataDetails({ title, value }: { title: string; value: unknown }) {
   return <Collapse className="cinema-data-details" size="small" ghost items={[{ key: 'data', label: title, children: <pre tabIndex={0}>{JSON.stringify(value, null, 2)}</pre> }]}/>;
@@ -225,7 +226,7 @@ function AgentComparison({ maxRounds }: { maxRounds: number }) {
 function SamplingComparison({ temperature }: { temperature: number }) {
   const a = samplingCase(0.2); const b = samplingCase(temperature);
   const rows = samplingCandidates.map((candidate, index) => ({ key: candidate.text, candidate: candidate.text, a: a.probabilities[index], b: b.probabilities[index] }));
-  const probability = (value: number, baseline = false) => <Progress percent={value * 100} size="small" status="normal" strokeColor={baseline ? '#8b97ab' : undefined} format={() => value < .001 ? '<0.1%' : `${(value * 100).toFixed(1)}%`}/>;
+  const probability = (value: number, baseline = false) => <Progress percent={value * 100} size="small" status="normal" strokeColor={baseline ? '#2549c8' : '#c14029'} format={() => value < .001 ? '<0.1%' : `${(value * 100).toFixed(1)}%`}/>;
   return <><Typography.Paragraph className="cinema-shared-input">共同开头：一只猫正在…… · 固定随机落点 u = 0.80</Typography.Paragraph><Table className="cinema-sampling-table" size="small" pagination={false} dataSource={rows} columns={[{ title: '候选', dataIndex: 'candidate', width: 90 }, { title: 'A · 温度 0.2', dataIndex: 'a', render: (value: number) => probability(value, true) }, { title: `B · 温度 ${temperature.toFixed(1)}`, dataIndex: 'b', render: (value: number) => probability(value) }]}/><div className="cinema-comparison cinema-sampling-results">{[a, b].map((item, index) => <CasePanel key={index} name={index === 0 ? 'A · 原来的区间' : 'B · 调整后的区间'} title={`选中：${item.word}`} baseline={index === 0}><Slider range disabled min={0} max={1} step={0.001} value={[item.start, item.end]} marks={{ 0: '0', 0.8: 'u = 0.80', 1: '1' }} ariaLabelForHandle={['选中区间左边界', '选中区间右边界']} tooltip={{ open: false }}/><Typography.Paragraph className="cinema-interval-reason" type="secondary">固定落点 0.80 在选中区间 {item.start.toFixed(3)}—{item.end.toFixed(3)} 内</Typography.Paragraph><Typography.Paragraph className="cinema-sampled-sentence">一只猫正在<Typography.Text strong>{item.word}</Typography.Text></Typography.Paragraph></CasePanel>)}</div><DataDetails title="查看计算依据：固定分数、概率与抽样区间" value={{ scores: samplingCandidates, randomDraw: 0.8, formula: 'softmax(scores / temperature)', A: a, B: b }}/></>;
 }
 

@@ -1,0 +1,25 @@
+.practice-guide.ant-card { min-width: 0; border: 1px solid var(--border,#c7bea9); border-left: 3px solid var(--accent,#2549c8); border-radius: 3px; background: var(--surface,#fffcf2); box-shadow: none; }
+.practice-guide.ant-card > .ant-card-body { padding: 12px 14px; }
+.practice-guide .practice-guide-title.ant-typography { margin: 0 0 7px; color: var(--text,#242520); font-size: 18px; line-height: 1.4; font-weight: 750; }
+.practice-guide .practice-guide-goal.ant-typography, .practice-guide .practice-guide-instruction.ant-typography { margin: 0 0 7px; font-size: 16px; line-height: 1.6; }
+.practice-guide .practice-guide-goal.ant-typography { color: var(--text,#242520); }
+.practice-guide .practice-guide-instruction.ant-typography { color: var(--muted,#655f52); }
+.practice-guide-outputs { display: grid; gap: 10px; margin: 9px 0; min-width: 0; }
+.practice-guide-outputs.has-pair { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.practice-guide-output { min-width: 0; padding: 7px 10px; background: var(--bg,#f6f2e6); border-left: 2px solid var(--border,#c7bea9); }
+.practice-guide .practice-guide-source.ant-typography { display: block; font-size: 14px; line-height: 1.5; color: var(--muted,#655f52); }
+.practice-guide .practice-guide-output .ant-typography:last-child { margin: 3px 0 0; color: var(--text,#242520); font-size: 16px; line-height: 1.55; overflow-wrap: anywhere; }
+.practice-guide-task, .practice-guide-observe, .practice-guide-input-change { display: grid; grid-template-columns: minmax(80px,max-content) minmax(0,1fr); align-items: baseline; gap: 8px; margin: 7px 0; }
+.practice-guide-task > .ant-typography:first-child, .practice-guide-observe > .ant-typography:first-child, .practice-guide-input-change > .ant-typography:first-child { font-size: 14px; line-height: 1.6; }
+.practice-guide-task > .ant-typography:first-child { color: var(--stamp,#c14029); }
+.practice-guide-input-change > .ant-typography:first-child { color: var(--accent,#2549c8); }
+.practice-guide-task > .ant-typography:last-child, .practice-guide-observe > .ant-typography:last-child, .practice-guide-input-change > .ant-typography:last-child { margin: 0; font-size: 16px; line-height: 1.6; overflow-wrap: anywhere; }
+.practice-guide .practice-guide-pending.ant-typography { display: block; margin: 5px 0 0; font-size: 14px; line-height: 1.6; }
+.practice-guide-actions { margin-top: 10px; }
+.practice-guide-actions .ant-btn { min-height: 30px; height: auto; font-size: 14px; line-height: 1.45; padding: 4px 8px; white-space: normal; }
+.practice-guide-raw-entry.ant-collapse { margin: 5px 0 -7px -8px; }
+.practice-guide-raw-entry .ant-collapse-header { font-size: 14px; }
+.practice-guide-raw { display: grid; gap: 12px; min-width: 0; }
+.practice-guide-raw pre { max-height: 200px; margin: 5px 0 0; padding: 9px; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--bg,#f6f2e6); font-size: 14px; line-height: 1.6; }
+.practice-guide-retry.ant-card, .practice-guide-edited.ant-card { border-left-color: var(--stamp,#c14029); }
+.practice-guide-replay.ant-card { border-left-color: var(--muted,#655f52); }

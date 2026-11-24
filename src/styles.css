@@ -1,12 +1,13 @@
 *{box-sizing:border-box}
-html,body,#root{margin:0;height:100%;overflow:hidden;background:#f7f9fc}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;color:#253046}
+html,body,#root{margin:0;height:100%;overflow:hidden;background:var(--bg)}
+#root,#root>.ant-app{height:100%;width:100%;min-width:0}
+body{font-family:var(--sans);color:var(--text)}
 h1,h2,h3,p{margin:0}
 a{text-decoration:none}
 pre,code,kbd{font-family:'SFMono-Regular',Consolas,'Liberation Mono',monospace}
 pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 svg{vertical-align:middle}
-::selection{background:#dce4ff}
+::selection{background:#ffe3a0;color:#242520}
 .spin{animation:spark-spin 1s linear infinite}
 @keyframes spark-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important}.spin{animation:none}}

@@ -203,15 +203,19 @@ export function simulateModel(raw: ModelRequest): ModelResponse {
 }
 
 export function serializable(value: unknown): unknown {
-  const seen = new WeakSet<object>();
+  // JSON can represent the same object in two sibling branches. Only a
+  // reference back to an active ancestor is a cycle. `this` is the holder of
+  // the current property, so leaving a branch also leaves its ancestor stack.
+  const ancestors: object[] = [];
   try {
-    const json = JSON.stringify(value, (_key, item: unknown) => {
+    const json = JSON.stringify(value, function(this: object, _key, item: unknown) {
       if (typeof item === 'bigint') return item.toString();
       if (typeof item === 'function') return '[function]';
       if (item instanceof Error) return { name: item.name, message: item.message };
       if (typeof item === 'object' && item !== null) {
-        if (seen.has(item)) return '[circular]';
-        seen.add(item);
+        while (ancestors.length && ancestors.at(-1) !== this) ancestors.pop();
+        if (ancestors.includes(item)) return '[circular]';
+        ancestors.push(item);
       }
       return item;
     });

@@ -1,28 +1,33 @@
-/* Fixed-height workbench. Controls and panel appearance remain Ant Design's. */
-.developer-lab.experiment-page{width:100%;max-width:1600px;height:100%;min-height:0;margin:0 auto;padding:0;display:flex;flex-direction:column;overflow:hidden;gap:12px}
+/* A two-page workshop; the code and evidence keep their own scroll areas. */
+.developer-lab.experiment-page{--workshop-paper:#fffaf0;--workshop-ink:#27251f;--workshop-blue:#254be0;--workshop-red:#c64d36;width:100%;height:100%;min-height:0;margin:0 auto;padding:0;display:flex;flex-direction:column;overflow:hidden;gap:14px;color:var(--workshop-ink)}
 .developer-lab .lab-fixed-heading{flex:none;min-width:0}
-.developer-lab .lab-context-row{min-height:32px;margin-bottom:6px}
-.developer-lab .lab-heading-row{min-width:0;min-height:34px;margin-bottom:4px}
-.developer-lab .lab-lesson-question{min-width:0;flex:1;margin:0!important}
+.developer-lab .lab-context-row{min-height:28px;margin-bottom:10px}
+.developer-lab .lab-heading-row{min-width:0;min-height:56px;margin-bottom:0}
+.developer-lab .lab-title-block{display:flex;gap:15px;align-items:center;min-width:0;flex:1}
+.developer-lab .lab-title-block>div{min-width:0}
+.developer-lab .lab-folio{font:italic 44px/.9 Georgia,'Songti SC',serif;color:var(--workshop-red);border-right:1px solid #b9ad94;padding-right:16px}
+.developer-lab .lab-eyebrow{font-size:11px;letter-spacing:2px;color:#85775e}
+.developer-lab .lab-lesson-question{min-width:0;margin:4px 0 0!important;font-family:'Songti SC','STSong',Georgia,serif;font-weight:700!important;letter-spacing:.2px}
 .developer-lab .lab-progress-line{flex-shrink:0}
-.developer-lab .lab-task-strip{min-width:0;min-height:28px}
+.developer-lab .lab-task-strip{min-width:0;min-height:28px;margin-top:10px;padding:5px 10px;background:#f0e6d2;border-left:3px solid var(--workshop-red)}
+.developer-lab .lab-pencil-label{color:var(--workshop-red);font-size:13px;font-weight:600;white-space:nowrap}
 .developer-lab .lab-task-summary{min-width:0;flex:1;margin:0!important}
-.developer-lab .lab-workbench{flex:1;min-height:0;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;overflow:hidden}
-.developer-lab .lab-code-panel,.developer-lab .lab-observation-panel{display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;overflow:hidden}
-.developer-lab .lab-code-panel>.ant-card-head{flex:none}
+.developer-lab .lab-workbench{flex:1;min-height:0;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;overflow:hidden;border-top:3px solid var(--workshop-ink);padding-top:8px}
+.developer-lab .lab-code-panel,.developer-lab .lab-observation-panel{display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;overflow:hidden;border-color:#c9bda5;box-shadow:0 2px 0 #ddd1bb;border-radius:4px 4px 2px 2px}
+.developer-lab .lab-code-panel>.ant-card-head{flex:none;min-height:58px;padding:0 18px;border-bottom-color:#cfc3ac}
+.developer-lab .lab-page-mark{font:italic 14px Georgia,'Songti SC',serif;letter-spacing:2px;color:var(--workshop-red);margin-right:3px}
 .developer-lab .lab-code-panel .lab-code-body,.developer-lab .lab-observation-panel .lab-observation-body{display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;overflow:hidden;padding:0}
-.developer-lab .lab-run-toolbar{flex:none;padding:10px 16px}
+.developer-lab .lab-run-toolbar{flex:none;padding:12px 16px;background:#fffaf0;border-bottom:1px dashed #d2c6b0}
 .developer-lab .lab-editor{position:relative;flex:1;min-height:0;min-width:0;overflow:hidden;overscroll-behavior:contain}
-.developer-lab .lab-observation-tabs{flex:1;min-height:0;min-width:0;overflow:hidden}
-.developer-lab .lab-observation-tabs>.ant-tabs-nav{flex:none;padding:0 16px;margin:0}
-.developer-lab .lab-observation-tabs>.ant-tabs-body-holder{flex:1;min-height:0;min-width:0;overflow:hidden}
-.developer-lab .lab-observation-tabs>.ant-tabs-body-holder>.ant-tabs-body{height:100%;min-height:0;min-width:0;overflow:hidden}
-.developer-lab .lab-observation-tabs>.ant-tabs-body-holder>.ant-tabs-body>.ant-tabs-content{height:100%;min-height:0;min-width:0;overflow:hidden}
-.developer-lab .lab-panel-scroll{height:100%;min-height:0;overflow-x:hidden;overflow-y:auto;padding:16px;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#98a7be #edf1f7;outline-offset:-3px}
+.developer-lab .lab-observation-heading{flex:none;min-height:58px;padding:10px 18px;border-bottom:1px solid #cfc3ac;background:#f6efdf}
+.developer-lab .lab-view-stack{flex:1;min-height:0;min-width:0;overflow:hidden}
+.developer-lab .lab-view{height:100%;min-height:0;min-width:0;overflow:hidden}
+.developer-lab .lab-view[hidden]{display:none}
+.developer-lab .lab-panel-scroll{height:100%;min-height:0;overflow-x:hidden;overflow-y:auto;padding:16px 18px;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#a4967a #f2eadb;outline-offset:-3px}
 .developer-lab .lab-panel-scroll::-webkit-scrollbar,.developer-lab .lab-evidence-code::-webkit-scrollbar,.developer-lab .lab-attempt-value pre::-webkit-scrollbar{width:10px;height:10px}
-.developer-lab .lab-panel-scroll::-webkit-scrollbar-track,.developer-lab .lab-evidence-code::-webkit-scrollbar-track,.developer-lab .lab-attempt-value pre::-webkit-scrollbar-track{background:#edf1f7}
-.developer-lab .lab-panel-scroll::-webkit-scrollbar-thumb,.developer-lab .lab-evidence-code::-webkit-scrollbar-thumb,.developer-lab .lab-attempt-value pre::-webkit-scrollbar-thumb{background:#98a7be;border:2px solid #edf1f7;border-radius:6px}
-.developer-lab .lab-observation-footer{flex:none;min-width:0;padding:10px 16px;border-top:1px solid var(--border,#dfe5ee)}
+.developer-lab .lab-panel-scroll::-webkit-scrollbar-track,.developer-lab .lab-evidence-code::-webkit-scrollbar-track,.developer-lab .lab-attempt-value pre::-webkit-scrollbar-track{background:#f2eadb}
+.developer-lab .lab-panel-scroll::-webkit-scrollbar-thumb,.developer-lab .lab-evidence-code::-webkit-scrollbar-thumb,.developer-lab .lab-attempt-value pre::-webkit-scrollbar-thumb{background:#a4967a;border:2px solid #f2eadb;border-radius:6px}
+.developer-lab .lab-observation-footer{flex:none;min-width:0;padding:12px 16px;border-top:1px solid #cfc3ac;background:#f6efdf}
 .developer-lab .lab-evidence-status{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
 .developer-lab .workspace-save-error{margin-bottom:10px}
 .developer-lab .lab-comparison-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -30,15 +35,39 @@
 .developer-lab .lab-comparison-note{margin-bottom:18px}
 .developer-lab .lab-attempt-meta{font-size:12px;overflow-wrap:anywhere}
 .developer-lab .lab-attempt-value{margin-top:16px}
-.developer-lab .lab-attempt-value pre,.developer-lab .lab-evidence-code{white-space:pre-wrap;overflow-wrap:anywhere;font-family:'SFMono-Regular',Consolas,monospace;font-size:14px;line-height:1.8;max-height:230px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#98a7be #edf1f7;margin:8px 0 0}
+.developer-lab .lab-attempt-value pre,.developer-lab .lab-evidence-code{white-space:pre-wrap;overflow-wrap:anywhere;font-family:'SFMono-Regular',Consolas,monospace;font-size:14px;line-height:1.8;max-height:230px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#a4967a #f2eadb;margin:8px 0 0}
 .developer-lab .lab-attempt-value pre{max-height:180px}
 .developer-lab .lab-observe{margin-top:16px}
 .developer-lab .lab-current-task{display:grid;grid-template-columns:80px minmax(0,1fr);gap:12px;margin-top:18px}
 .developer-lab .lab-timeline{min-width:0}
 .developer-lab .event-counter{position:static;white-space:nowrap;font-variant-numeric:tabular-nums}
 .developer-lab .lab-prediction{margin-top:18px}
-.developer-lab .code-active-line{background:#4361ee0d!important}
-.developer-lab .code-active-glyph{background:#4361ee!important}
+.developer-lab .lab-execution-route{padding:8px 0 14px;border-bottom:1px dashed #bcb096}
+.developer-lab .lab-execution-steps{width:100%}
+.developer-lab .lab-execution-steps .ant-steps-item{min-width:0;flex:1}
+.developer-lab .lab-execution-steps .ant-steps-item-title{font-size:14px;line-height:24px;font-weight:600;white-space:nowrap}
+.developer-lab .lab-execution-steps .ant-steps-item-content{font-size:12px;line-height:18px}
+.developer-lab .lab-execution-steps .lab-step-selected .ant-steps-item-title{color:var(--workshop-blue);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.developer-lab .lab-step-explanation{padding:8px 0 2px}
+.developer-lab .lab-step-explanation .ant-typography{margin:0}
+.developer-lab .lab-step-explanation h5{font:700 21px/1.4 'Songti SC','STSong',Georgia,serif}
+.developer-lab .lab-step-explanation>div{margin-bottom:7px}
+.developer-lab .lab-agent-return{display:flex;gap:10px;padding:11px 13px;background:#f4ecdc;border-left:3px solid var(--workshop-red)}
+.developer-lab .lab-agent-return>svg{flex:none;color:var(--workshop-red);margin-top:3px}
+.developer-lab .lab-agent-return .ant-typography{margin:0;font-size:13px}
+.developer-lab .lab-agent-return .ant-btn{padding-left:0;font-size:13px}
+.developer-lab .lab-code-location-note{font-size:12px}
+.developer-lab .lab-model-source{font-size:12px;font-style:italic}
+.developer-lab .code-active-line{background:#254be010!important}
+.developer-lab .code-related-line{background:#f1e8d5!important}
+.developer-lab .code-active-glyph,.developer-lab .code-related-glyph{border-left:3px solid var(--workshop-red)}
+.developer-lab .code-related-glyph{border-color:var(--workshop-blue)}
 .developer-lab .editor-loading{display:flex;align-items:center;justify-content:center;gap:12px;height:100%}
 .presenting .spark-app .lab-header{display:none}
 .presenting .developer-lab .lab-heading-row,.presenting .developer-lab .lab-task-strip{display:none}
+.lab-source-guide{flex:none;display:flex;align-items:baseline;gap:9px;padding:7px 14px;background:#f1eddf;border-bottom:1px solid #d9ceb7;font-size:13px;line-height:1.5}
+.lab-source-guide strong{color:var(--workshop-blue);white-space:nowrap}
+.lab-source-guide span{flex:1;min-width:0;overflow-wrap:anywhere}
+.lab-source-guide small{white-space:nowrap;color:var(--muted)}
+.lab-input-change{margin:0 0 12px;overflow-wrap:anywhere}
+.lab-input-change strong{margin-right:6px;color:var(--workshop-blue)}

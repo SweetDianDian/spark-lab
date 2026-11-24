@@ -71,7 +71,7 @@ test('learning definitions map concepts honestly and keep branch frames out of t
   assert.equal(new Set(LEARNING_PATH.map(item => item.lessonId)).size, 14);
   assert.equal(getLearningPathItem('first-call')?.principleSceneId, 'api-call');
   assert.equal(getLearningPathItem('tokens')?.principleSceneId, 'sampling');
-  assert.equal(getLearningPathItem('tokens')?.practiceAvailability, 'upcoming');
+  assert.equal(getLearningPathItem('tokens')?.practiceAvailability, 'available');
   assert.equal(getLearningPathItem('rag')?.principleSceneId, undefined);
   assert.equal(getLearningPathItem('rag')?.principleAvailability, 'upcoming');
   assert.deepEqual(PRINCIPLE_DEFINITIONS.map(item => item.requiredFrameIds.length), [4, 4, 5, 9, 4]);
@@ -154,5 +154,30 @@ test('return destinations preserve replay and map position without allowing fore
   assert.equal(theaterReturnPath('/lab/tools?replay=%3Cscript%3E'), '/lab/tools');
   for (const unsafe of ['https://elsewhere.example/lab/tools', '//elsewhere.example/lab/tools', '/\\elsewhere.example', '/admin', 'javascript:alert(1)', null]) {
     assert.equal(theaterReturnPath(unsafe), '/explore');
+  }
+});
+
+test('deep demonstration returns preserve whitelisted relations state independent of query ordering', () => {
+  for (const [raw, expected] of [
+    ['/explore?view=relations', '/explore?view=relations'],
+    ['/explore?view=relations&at=tools', '/explore?view=relations&at=tools'],
+    ['/explore?at=tools&view=relations', '/explore?view=relations&at=tools'],
+    ['/explore?view=unknown&at=tools', '/explore?at=tools'],
+    ['/explore?view=relations&at=%3Cscript%3E', '/explore?view=relations'],
+    ['/explore?view=relations&redirect=https://elsewhere.example#fragment', '/explore?view=relations'],
+  ]) {
+    assert.equal(theaterReturnPath(raw), expected);
+    for (const mode of ['learn', 'lab']) {
+      const source = `/${mode}/tools?` + new URLSearchParams({ replay: 'run-123', frame: 'execute', returnTo: raw });
+      const returned = new URL(theaterReturnPath(source), 'https://spark-lab.invalid');
+      assert.equal(returned.pathname, `/${mode}/tools`);
+      assert.equal(returned.searchParams.get('returnTo'), expected);
+      assert.equal(returned.searchParams.get('replay'), 'run-123');
+      assert.equal(returned.searchParams.get('frame'), 'execute');
+    }
+  }
+  for (const unsafe of ['https://elsewhere.example/explore?view=relations', '//elsewhere.example/explore?view=relations', '/\\elsewhere.example/explore?view=relations', '/admin?view=relations']) {
+    const source = '/learn/tools?' + new URLSearchParams({ returnTo: unsafe });
+    assert.equal(theaterReturnPath(source), '/learn/tools');
   }
 });

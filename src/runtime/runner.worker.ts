@@ -60,7 +60,7 @@ function createLab(mode: RunMode): { lab: LabAPI; getOutput: () => unknown; hasO
     },
     log(value) { emit({ type: 'log', nodeId: 'input', title: '代码日志', data: value, source: 'runtime' }); },
     step(nodeId, title, data = null) {
-      if (!['input', 'model', 'tool', 'output'].includes(nodeId)) throw new Error('lab.step 的 nodeId 只支持 input / model / tool / output。');
+      if (typeof nodeId !== 'string' || !/^[a-z][a-z0-9-]{0,31}$/.test(nodeId)) throw new Error('步骤名应以小写字母开头，最多 32 个字母、数字或短横线。');
       emit({ type: 'step', nodeId, title: String(title), data, source: 'runtime' });
     },
     output(value) {

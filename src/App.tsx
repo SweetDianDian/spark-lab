@@ -1,24 +1,28 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Alert, Button, Card, Empty, Flex, Input, Menu, Result, Space, Spin, Tabs, Tag, Tooltip, Typography } from 'antd';
-import { ApiOutlined, CodeOutlined, DeleteOutlined, ExperimentOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import { ApiOutlined, CodeOutlined, DeleteOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { lessons } from './data/lessons';
 import { getLearningPathItem } from './data/learning-path';
 import Dialog from './components/Dialog';
 import Landing from './components/Landing';
 import { deleteRun, getNote, getRuns, setNote } from './lib/storage';
 
-const Workspace = lazy(() => import('./components/Workspace'));
+import { lastChapterPath } from './lib/chapter-navigation';
+const ChapterReader = lazy(() => import('./components/ChapterReader'));
 const KnowledgeMap = lazy(() => import('./components/KnowledgeMap'));
 const PrincipleTheater = lazy(() => import('./components/PrincipleTheater'));
+const pageLayouts: Record<string, string> = { '/': 'landing', '/explore': 'catalogue', '/notebook': 'notebook', '/theater': 'theater' };
 
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const [connection, setConnection] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
-  const isLesson = location.pathname.startsWith('/lab/');
-  const isTheater = location.pathname === '/theater';
+  const isLesson = /^\/(learn|lab)\//.test(location.pathname);
+  const pagePath = location.pathname.replace(/\/+$/, '') || '/';
+  const isTheater = pagePath === '/theater';
+  const mainLayout = isLesson ? 'workspace' : pageLayouts[pagePath] ?? 'scroll';
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0, left: 0 });
     const lessonId = location.pathname.split('/').at(-1) ?? '';
@@ -27,17 +31,21 @@ export default function App() {
   }, [location.pathname, isLesson]);
   return <div className="spark-app">
     <header className="lab-header">
-      <Button type="text" icon={<ExperimentOutlined/>} className="lab-brand" onClick={() => navigate('/')} aria-label="Spark Lab 首页"><strong>SPARK<span className="lab-brand-slash">/</span>LAB</strong></Button>
-      <nav aria-label="主导航"><Menu mode="horizontal" selectedKeys={[isLesson ? '/explore' : location.pathname]} onClick={({ key }) => navigate(key)} items={[{ key: '/explore', label: '课程路径' }, { key: '/theater', label: '原理演示' }, { key: '/notebook', label: '学习记录' }]}/></nav>
+      <Button type="text" className="lab-brand" onClick={() => navigate('/')} aria-label="Spark Lab 首页">
+        <img src="/favicon.svg" alt="" width={32} height={32}/><strong>火花实验室</strong>
+      </Button>
+      <nav aria-label="主导航"><Menu mode="horizontal" selectedKeys={[isLesson ? '/continue' : location.pathname]} onClick={({ key }) => navigate(key)} items={[{ key: '/', label: '体验台' }, { key: '/explore', label: '课程路径' }, { key: '/continue', label: '继续学习' }, { key: '/notebook', label: '学习记录' }]}/></nav>
       <Button className="lab-connect" icon={<ApiOutlined/>} onClick={() => setConnection(true)}>API 连接</Button>
     </header>
-    <main ref={mainRef} className={isLesson ? 'lab-main lab-main-workspace' : isTheater ? 'lab-main lab-main-theater' : 'lab-main lab-main-scroll'} aria-label={isLesson ? '代码实验工作区' : isTheater ? '原理学习工作区' : '页面内容'}>
+    <main ref={mainRef} className={`lab-main lab-main-${mainLayout}`} aria-label={isLesson ? '章节学习区' : isTheater ? '原理学习工作区' : '页面内容'}>
       <Suspense fallback={<div className="lab-loading"><Spin description="正在打开学习内容" size="large"/></div>}>
         <Routes>
           <Route path="/" element={<Landing/>}/>
           <Route path="/explore" element={<KnowledgeMap/>}/>
           <Route path="/theater" element={<PrincipleTheater/>}/>
-          <Route path="/lab/:lessonId" element={<Workspace onConnect={() => setConnection(true)}/>}/>
+          <Route path="/continue" element={<Navigate to={lastChapterPath()} replace/>}/>
+          <Route path="/learn/:lessonId" element={<ChapterReader mode="learn" onConnect={() => setConnection(true)}/>}/>
+          <Route path="/lab/:lessonId" element={<ChapterReader mode="lab" onConnect={() => setConnection(true)}/>}/>
           <Route path="/notebook" element={<Notebook/>}/>
           <Route path="*" element={<Result className="lab-not-found" status="404" title="没有找到这一页" extra={<Button type="primary" onClick={() => navigate('/explore')}>返回课程路径</Button>}/>}/>
         </Routes>
@@ -60,7 +68,7 @@ function Notebook() {
       <CodeOutlined style={{ fontSize: 22, color: '#4361ee' }}/>
       <Flex vertical gap={8} flex={1}>
         <Typography.Text strong>{getLearningPathItem(run.lessonId)?.title ?? run.title}</Typography.Text>
-        <Space size={8} wrap><Typography.Text type="secondary">{new Date(run.savedAt).toLocaleString('zh-CN', {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}</Typography.Text><Tag>{run.language}</Tag><Tag>{run.mode === 'live' ? '真实 API' : '教学模拟'}</Tag><Typography.Text type="secondary">{run.events.length} 个事件</Typography.Text></Space>
+        <Space size={8} wrap><Typography.Text type="secondary">{new Date(run.savedAt).toLocaleString('zh-CN', {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}</Typography.Text><Tag>{run.language}</Tag><Tag>{run.events.some(event => event.type === 'model.started') ? run.mode === 'live' ? '真实 API' : '教学模拟' : '本地执行'}</Tag><Typography.Text type="secondary">{run.events.length} 个事件</Typography.Text></Space>
       </Flex>
       <Tag color={run.status === 'failed' ? 'error' : run.status === 'completed' ? 'success' : 'default'}>{run.status === 'completed' ? '运行结束' : run.status === 'failed' ? '运行失败' : '已取消'}</Tag>
       <Button icon={<PlayCircleOutlined/>} onClick={() => navigate('/lab/' + run.lessonId + '?replay=' + encodeURIComponent(run.id))}>回放</Button>
@@ -69,10 +77,10 @@ function Notebook() {
   </Card>)}</div> : <Card className="records-empty"><Empty description={<Space orientation="vertical"><Typography.Text strong>还没有保存的实验</Typography.Text><Typography.Text type="secondary">完成一次实验后，保存当时的代码和执行记录，随时回来检查。</Typography.Text></Space>}><Button type="primary" onClick={() => navigate('/lab/first-call')}>打开第一个实验</Button></Empty></Card>;
   const noteContent = <div className="records-note-layout"><Card size="small"><Menu aria-label="选择笔记章节" selectedKeys={[selected]} onClick={({ key }) => pickNote(key)} items={lessons.filter(lesson => lesson.available).map(lesson => ({ key: lesson.id, label: lesson.number + ' · ' + (getLearningPathItem(lesson.id)?.title ?? lesson.title) }))}/></Card><Card>
     <Flex className="records-note-title" align="center" justify="space-between" gap={16}><Typography.Text strong>{getLearningPathItem(selected)?.title}</Typography.Text><Tag color={saved ? 'default' : 'error'} role="status">{saved ? '自动保存在此浏览器' : '保存失败，请复制笔记备份'}</Tag></Flex>
-    <Input.TextArea aria-label="章节学习笔记" placeholder="用自己的话解释这一节的机制，记录代码修改和观察到的结果。" value={note} autoSize={{ minRows: 13, maxRows: 24 }} onChange={event => { updateNote(event.target.value); setSaved(setNote(selected, event.target.value)); }}/>
+    <Input.TextArea aria-label="章节学习笔记" placeholder="用自己的话解释这一节的机制，记录代码修改和观察到的结果。" value={note} onChange={event => { updateNote(event.target.value); setSaved(setNote(selected, event.target.value)); }}/>
   </Card></div>;
   return <section className="records-page">
-    <Flex className="records-heading" justify="space-between" align="center"><div><Typography.Title level={2}>学习记录</Typography.Title><Typography.Paragraph type="secondary">保存的代码、执行过程，以及你自己的理解。</Typography.Paragraph></div><Button onClick={() => navigate('/explore')}>继续学习</Button></Flex>
+    <Flex className="records-heading" justify="space-between" align="center"><div><Typography.Title level={2}>学习记录</Typography.Title><Typography.Paragraph type="secondary">保存的代码、执行过程，以及你自己的理解。</Typography.Paragraph></div><Button onClick={() => navigate(lastChapterPath())}>继续学习</Button></Flex>
     <Tabs activeKey={tab} onChange={setTab} items={[{ key: 'runs', label: '实验回放 · ' + runs.length, children: runContent }, { key: 'notes', label: '章节笔记', children: noteContent }]}/>
     <Typography.Paragraph type="secondary" className="records-footnote">记录保存在当前浏览器。历史回放不会重新调用模型。</Typography.Paragraph>
   </section>;

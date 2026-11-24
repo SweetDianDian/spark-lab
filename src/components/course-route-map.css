@@ -1,0 +1,25 @@
+.course-routes { height: 100%; box-sizing: border-box; padding: 70px clamp(20px, 3vw, 64px) 16px; overflow: auto; overscroll-behavior: contain; background: var(--bg); }
+.course-routes:focus-visible { outline: 2px solid var(--atlas-blue); outline-offset: -2px; }
+.course-route-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; column-gap: clamp(20px, 3vw, 55px); max-width: 1820px; margin: 0 auto; }
+.course-route { min-width: 0; display: grid; align-content: start; gap: 7px; border-top: 1px solid var(--border); padding: clamp(8px, 1.6vh, 18px) 0; }
+.course-route.route-wide { grid-column: 1 / -1; }
+.course-route h3 { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.4; font-weight: 650; }
+.route-chain { display: flex; align-items: center; gap: clamp(5px, .65vw, 14px); min-width: 0; }
+.route-stop { position: relative; flex: 1 1 0; min-width: 0; }
+.route-chapter.ant-btn { display: flex; align-items: center; justify-content: flex-start; width: 100%; gap: 8px; padding: 8px clamp(7px, .85vw, 18px); height: auto; min-height: 44px; white-space: normal; text-align: left; line-height: 1.3; font-size: clamp(16px, 1.08vw, 20px); font-weight: 700; background: var(--atlas-paper); border-color: #938c78; box-shadow: none; }
+.route-chapter.ant-btn[aria-current="step"] { background: #e9eeff; border-color: var(--atlas-blue); color: var(--atlas-blue); }
+.route-number { flex-shrink: 0; font-size: .78em; font-variant-numeric: tabular-nums; color: var(--muted); }
+.route-arrow.anticon { flex: 0 0 auto; color: var(--atlas-blue); font-size: clamp(17px, 1.4vw, 23px); }
+.route-sources { flex: 1 1 0; min-width: 0; min-height: 44px; box-sizing: border-box; display: flex; align-items: center; flex-wrap: wrap; gap: 2px 4px; padding: 3px 7px; border: 1px dashed #b1a78e; border-radius: 5px; }
+.route-sources > span:not(.route-plus), .route-extra > span { min-width: 0; max-width: 100%; }
+.route-reference.ant-btn { height: auto; min-height: 26px; gap: 6px; padding: 2px 4px; line-height: 1.3; text-align: left; white-space: normal; color: var(--atlas-ink); font-size: clamp(14px, .95vw, 17px); }
+.route-plus.anticon { color: var(--muted); font-size: 10px; }
+.route-chain:has(.route-extra) { align-items: start; }
+.route-chain:has(.route-extra) > .route-arrow { margin-top: 12px; }
+.route-extra { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 5px; padding: 3px 0 0 5px; color: var(--muted); font-size: 14px; }
+.route-extra .route-reference.ant-btn { min-height: auto; font-size: 13px; padding-block: 1px; }
+.course-route[data-route="capstone"] .route-sources { flex-grow: 1.3; }
+@media (min-height: 800px) {
+  .course-route { gap: 10px; padding-block: clamp(15px, 2vh, 27px); }
+  .route-chapter.ant-btn { min-height: 49px; }
+}

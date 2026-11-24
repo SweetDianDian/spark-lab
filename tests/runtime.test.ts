@@ -90,3 +90,23 @@ test('logs can serialize circular data and bigint safely', () => {
   object.self = object;
   assert.deepEqual(serializable(object), { value: '3', self: '[circular]' });
 });
+
+test('serializable preserves shared references in sibling evidence branches', () => {
+  const source = { id:'menu',price:23 };
+  const ids = ['menu'];
+  const evidence = { input:{documents:[source],packet:{sourceIds:ids}},result:{source,review:{sourceIds:ids}} };
+  assert.deepEqual(serializable(evidence),JSON.parse(JSON.stringify(evidence)));
+  assert.deepEqual(serializable([source,source,{again:source}]),[source,source,{again:source}]);
+});
+
+test('serializable marks only true ancestors while retaining truncation and error behavior', () => {
+  const root: Record<string,unknown> = { name:'root' };
+  const child = { parent:root };
+  root.left = child; root.right = child;
+  assert.deepEqual(serializable(root),{name:'root',left:{parent:'[circular]'},right:{parent:'[circular]'}});
+  assert.deepEqual(serializable({failure:new TypeError('bad value'),number:8n,callback:()=>0}),{failure:{name:'TypeError',message:'bad value'},number:'8',callback:'[function]'});
+  assert.equal(serializable(undefined),null);
+  assert.match(String(serializable('x'.repeat(90_000))),/… \[输出已截断\]$/);
+  assert.ok(String(serializable('x'.repeat(90_000))).length<80_100);
+  assert.equal(serializable({toJSON(){throw new Error('cannot serialize')}}),'[object Object]');
+});

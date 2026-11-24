@@ -18,10 +18,13 @@ export type LearningPathItem = {
   lessonId: string;
   title: string;
   objective: string;
+  leadIn?: string;
   stage: LearningStage;
   prerequisites: readonly string[];
+  /** Optional deep A/B demonstration; separate from the chapter's own animation. */
   principleSceneId?: TheaterSceneId;
   relatedSceneIds: readonly TheaterSceneId[];
+  /** Availability of the registered deep A/B scene, not of chapter animations. */
   principleAvailability: LearningAvailability;
   practiceAvailability: LearningAvailability;
   upcoming: string | null;
@@ -48,21 +51,39 @@ export const PRINCIPLE_DEFINITIONS: readonly PrincipleDefinition[] = [
 ];
 
 export const LEARNING_PATH: readonly LearningPathItem[] = [
-  { lessonId: 'first-call', title: 'LLM 调用', objective: '发送一次模型请求，并从响应对象读取 text 显示结果。', stage: '基础主线', prerequisites: [], principleSceneId: 'api-call', relatedSceneIds: [], principleAvailability: 'available', practiceAvailability: 'available', upcoming: null },
-  { lessonId: 'context', title: '上下文', objective: '删除 history 中的一条背景，核对请求内容与回答的变化。', stage: '基础主线', prerequisites: ['first-call'], principleSceneId: 'context', relatedSceneIds: [], principleAvailability: 'available', practiceAvailability: 'available', upcoming: null },
-  { lessonId: 'tools', title: '工具调用', objective: '接住模型的工具请求，校验并执行，将参数追踪到计算结果。', stage: '基础主线', prerequisites: ['context'], principleSceneId: 'tools', relatedSceneIds: [], principleAvailability: 'available', practiceAvailability: 'available', upcoming: null },
-  { lessonId: 'agent-loop', title: 'Agent 循环', objective: '把工具结果写回下一轮上下文，并验证回答结束与轮数限制。', stage: '基础主线', prerequisites: ['tools'], principleSceneId: 'agent', relatedSceneIds: [], principleAvailability: 'available', practiceAvailability: 'available', upcoming: null },
-  { lessonId: 'tokens', title: 'Token 与采样', objective: '理解文本分词，并通过温度与随机落点解释候选如何被选中。', stage: '模型原理', prerequisites: ['first-call'], principleSceneId: 'sampling', relatedSceneIds: [], principleAvailability: 'available', practiceAvailability: 'upcoming', upcoming: '采样原理可看；分词与采样代码实验尚未开放。' },
-  { lessonId: 'embeddings', title: '向量与语义检索', objective: '计算向量相似度，检查排序结果是否真正回答了检索问题。', stage: '应用进阶', prerequisites: ['first-call'], relatedSceneIds: [], principleAvailability: 'upcoming', practiceAvailability: 'upcoming', upcoming: '目前可读概念概要；向量原理演示与实操尚未开放。' },
-  { lessonId: 'rag', title: 'RAG', objective: '追踪文档切块、检索和引用，检查回答是否得到来源支持。', stage: '应用进阶', prerequisites: ['context', 'embeddings'], relatedSceneIds: ['context'], principleAvailability: 'upcoming', practiceAvailability: 'upcoming', upcoming: '目前可读概念概要；完整 RAG 演示与实操尚未开放。' },
-  { lessonId: 'memory', title: '状态与记忆', objective: '区分本次上下文与持久记忆，检查恢复任务时是否重复执行操作。', stage: '应用进阶', prerequisites: ['context', 'agent-loop'], relatedSceneIds: ['context'], principleAvailability: 'upcoming', practiceAvailability: 'upcoming', upcoming: '目前可读概念概要；持久记忆和任务恢复实验尚未开放。' },
-  { lessonId: 'evaluation', title: '评测与可靠性', objective: '用同一组案例比较成功率、失败原因、耗时和调用用量。', stage: '应用进阶', prerequisites: ['agent-loop'], relatedSceneIds: [], principleAvailability: 'upcoming', practiceAvailability: 'upcoming', upcoming: '目前可读概念概要；评测演示与实操尚未开放。' },
-  { lessonId: 'capstone', title: '综合研究助手', objective: '组合检索、计算与证据引用，并用验收条件检查最终报告。', stage: '应用进阶', prerequisites: ['rag', 'memory', 'evaluation'], relatedSceneIds: ['agent'], principleAvailability: 'upcoming', practiceAvailability: 'upcoming', upcoming: '目前可读项目目标；综合演示与项目实操尚未开放。' },
-  { lessonId: 'transformer', title: 'Transformer', objective: '用可检查的小矩阵追踪 Attention 与网络输出，区分教学模型和闭源 API。', stage: '模型原理', prerequisites: ['tokens'], relatedSceneIds: ['sampling'], principleAvailability: 'upcoming', practiceAvailability: 'upcoming', upcoming: '目前可读概念概要；Attention 与网络内部演示尚未开放。' },
-  { lessonId: 'training', title: '训练与适配', objective: '观察损失与参数更新，区分训练、Prompt 和 RAG 改变的位置。', stage: '模型原理', prerequisites: ['transformer'], relatedSceneIds: [], principleAvailability: 'upcoming', practiceAvailability: 'upcoming', upcoming: '目前可读概念概要；训练与微调实验尚未开放。' },
-  { lessonId: 'mcp', title: 'MCP', objective: '追踪能力发现和工具调用，检查数据权限与失败结果。', stage: '应用进阶', prerequisites: ['tools'], relatedSceneIds: ['tools'], principleAvailability: 'upcoming', practiceAvailability: 'upcoming', upcoming: '目前可读概念概要；MCP 协议演示与接入实验尚未开放。' },
-  { lessonId: 'multi-agent', title: '工作流与多 Agent', objective: '明确角色交接数据，用同一任务比较单 Agent 与协作方案。', stage: '应用进阶', prerequisites: ['agent-loop', 'evaluation'], relatedSceneIds: ['agent'], principleAvailability: 'upcoming', practiceAvailability: 'upcoming', upcoming: '目前可读概念概要；多角色协作演示与实操尚未开放。' },
+  { lessonId: 'first-call', title: 'LLM 调用', objective: '发送一次模型请求，从响应对象读取 text，并把回答显示出来。', leadIn: '先让程序接住一个问题、拿到一份回答，后面的背景、工具和循环才有接入的位置。', stage: '基础主线', prerequisites: [], principleSceneId: 'api-call', relatedSceneIds: [], principleAvailability: 'available', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'context', title: '上下文', objective: '只移除 history 背景，核对本次请求消息与回答的变化。', leadIn: '助手已经能回答了；现在把读者的背景带进去，看看本次输入怎样影响解释。', stage: '基础主线', prerequisites: ['first-call'], principleSceneId: 'context', relatedSceneIds: [], principleAvailability: 'available', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'tools', title: '工具调用', objective: '接住模型的工具请求，校验并执行，把人数和单价追踪到总费用。', leadIn: '会按背景解释之后，遇到算数问题还要把请求交给程序，让计算真正发生。', stage: '基础主线', prerequisites: ['context'], principleSceneId: 'tools', relatedSceneIds: [], principleAvailability: 'available', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'agent-loop', title: 'Agent 循环', objective: '把工具结果带回下一轮，区分生成最终回答和达到轮数上限。', leadIn: '一次工具调用已经跑通；下一步把返回结果带进后续轮次，继续完成多步任务。', stage: '基础主线', prerequisites: ['tools'], principleSceneId: 'agent', relatedSceneIds: [], principleAvailability: 'available', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'tokens', title: 'Token 与采样', objective: '用小词表切分文本，固定采样落点，计算温度改变后的候选概率与结果。', leadIn: '前面把模型当作可调用的服务；现在拆开生成这一环，看看文字怎样切分、候选怎样选出。', stage: '模型原理', prerequisites: ['first-call'], principleSceneId: 'sampling', relatedSceneIds: [], principleAvailability: 'available', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'transformer', title: 'Transformer', objective: '计算二维单头 Attention 的权重与加权结果，观察查询方向的影响。', leadIn: '知道模型逐个选择 Token 后，再看一次 Attention 怎样从不同输入位置汇总信息。', stage: '模型原理', prerequisites: ['tokens'], relatedSceneIds: ['sampling'], principleAvailability: 'upcoming', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'training', title: '训练与适配', objective: '给单参数线性模型做一步梯度更新，比较不同学习率带来的损失变化。', leadIn: '看过模型中的数值计算后，用一个更小的线性模型理解参数怎样被误差推动。', stage: '模型原理', prerequisites: ['transformer'], relatedSceneIds: [], principleAvailability: 'upcoming', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'embeddings', title: '向量与语义检索', objective: '用词频生成可检查的向量，计算余弦相似度并排序，不假定已有语义能力。', leadIn: '看过计算与训练，再回到助手需要的资料：先把文本变成可比较的向量，尝试寻找相关内容。', stage: '应用进阶', prerequisites: ['first-call'], relatedSceneIds: [], principleAvailability: 'upcoming', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'rag', title: 'RAG', objective: '从本地片段检索资料，组装带来源的上下文和证据摘录，不调用生成模型。', leadIn: '能给资料排序后，把取回的原文和来源编号放进回答依据，而不只报一个相关分数。', stage: '应用进阶', prerequisites: ['context', 'embeddings'], relatedSceneIds: ['context'], principleAvailability: 'upcoming', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'memory', title: '状态与记忆', objective: '在一次运行内序列化并恢复账本，检查丢失完成标记为何导致重复记账。', leadIn: '资料能够找到了，任务却可能中断；用状态快照演练恢复，检查哪些操作不能重复执行。', stage: '应用进阶', prerequisites: ['context', 'agent-loop'], relatedSceneIds: ['context'], principleAvailability: 'upcoming', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'mcp', title: 'MCP', objective: '用本地函数模拟能力发现和工具调用，区分能力清单、调用策略与执行结果。', leadIn: '知道任务要保存哪些状态后，再整理工具的接入约定：先发现能力，再按接口传递参数。', stage: '应用进阶', prerequisites: ['tools'], relatedSceneIds: ['tools'], principleAvailability: 'upcoming', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'evaluation', title: '评测与可靠性', objective: '运行固定计算案例，按容差统计通过率，并保留每个失败样本。', leadIn: '工具能按约定调用，不等于每次结果都对；固定一组案例，逐条检查实际输出。', stage: '应用进阶', prerequisites: ['agent-loop'], relatedSceneIds: [], principleAvailability: 'upcoming', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'multi-agent', title: '工作流与多 Agent', objective: '让两个本地角色函数交接结构化证据，核验来源缺失与金额不一致。', leadIn: '有了明确的验收规则，再让两个角色交接证据，看看核验者为什么接受或退回。', stage: '应用进阶', prerequisites: ['agent-loop', 'evaluation'], relatedSceneIds: ['agent'], principleAvailability: 'upcoming', practiceAvailability: 'available', upcoming: null },
+  { lessonId: 'capstone', title: '综合研究助手', objective: '组合本地资料选择、费用计算和预算检查，输出带引用的活动费用报告。', leadIn: '把检索、计算和核验连起来，用一份带来源的费用报告检验这条学习路线。', stage: '应用进阶', prerequisites: ['rag', 'tools', 'evaluation'], relatedSceneIds: ['agent'], principleAvailability: 'upcoming', practiceAvailability: 'available', upcoming: null },
 ];
+
+
+/** Section boundaries keep the catalogue in the exact LEARNING_PATH order. */
+export const LEARNING_SECTIONS = [
+  { id: 'getting-started', title: '让助手先做起来', startLessonId: 'first-call' },
+  { id: 'model-internals', title: '模型是怎么工作的', startLessonId: 'tokens' },
+  { id: 'building-assistant', title: '构建自己的助手', startLessonId: 'embeddings' },
+  { id: 'project', title: '把能力串成一个项目', startLessonId: 'capstone' },
+] as const;
+
+export function getLearningSections() {
+  return LEARNING_SECTIONS.map((section, index) => {
+    const start = LEARNING_PATH.findIndex(item => item.lessonId === section.startLessonId);
+    const next = LEARNING_SECTIONS[index + 1];
+    const end = next ? LEARNING_PATH.findIndex(item => item.lessonId === next.startLessonId) : LEARNING_PATH.length;
+    return { ...section, startIndex: start, lessons: LEARNING_PATH.slice(start, end) };
+  });
+}
 
 export function getLearningPathItem(lessonId: string): LearningPathItem | undefined {
   return LEARNING_PATH.find(item => item.lessonId === lessonId);

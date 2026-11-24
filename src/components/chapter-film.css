@@ -1,0 +1,126 @@
+.chapter-film { height: 100%; min-height: 0; min-width: 0; display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; color: var(--text, #242520); background: var(--surface, #fffcf2); overflow: hidden; }
+.chapter-film-heading { padding: 12px 20px 8px; }
+.chapter-film-heading > div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 12px; }
+.chapter-film-heading .ant-tag { color: var(--stamp, #c14029); background: transparent; padding: 0; margin: 0; font-size: 12px; }
+.chapter-film-heading h3.ant-typography { margin: 0; font: 750 clamp(21px, 1.8vw, 26px)/1.35 var(--serif, serif); color: var(--text, #242520); }
+.chapter-film-goal.ant-typography { display: block; margin-top: 5px; font-size: 14px; color: var(--muted, #655f52); line-height: 1.55; }
+.chapter-film-goal strong { font-weight: 650; margin-right: 9px; color: var(--text, #242520); }
+.chapter-film-scenes { padding: 0 20px 8px; border-bottom: 1px solid var(--border, #c7bea9); }
+.chapter-film-scenes ol { list-style: none; display: grid; gap: 7px; margin: 0; padding: 0; }
+.chapter-film-scenes li { min-width: 0; }
+.chapter-film-scenes .ant-btn { gap: 6px; height: 34px; padding-inline: 7px; font-size: 14px; }
+.chapter-film-scenes .ant-btn > span { min-width: 0; }
+.chapter-film-scene-number { font-size: 12px; opacity: .75; }
+.chapter-film-scene-read { font-size: 11px; }
+.chapter-film-reading { min-height: 0; min-width: 0; display: grid; grid-template-columns: minmax(280px, 1fr) minmax(0, 1.35fr); grid-template-areas: "details stage"; gap: 16px; overflow: hidden; padding: 12px 20px; }
+.chapter-film-details { grid-area: details; min-height: 0; min-width: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.chapter-film-details:focus-visible { outline: 2px solid var(--accent, #2549c8); outline-offset: -2px; }
+.chapter-film-stage { grid-area: stage; min-height: 0; min-width: 0; display: grid; grid-template-rows: 21px minmax(0, 1fr); place-items: start center; overflow: hidden; }
+.chapter-film-stage-caption { justify-self: start; font-size: 12px; line-height: 18px; color: var(--muted, #655f52); }
+.chapter-film-diagram { width: 100%; min-width: 0; height: 100%; min-height: 0; overflow: hidden; color: var(--accent, #2549c8); font-family: var(--sans, sans-serif); }
+.chapter-film-diagram text { fill: var(--text, #242520); }
+.chapter-film-wire { fill: none; stroke: var(--border, #c7bea9); stroke-width: 2; }
+.chapter-film-wire.is-carrying { stroke: var(--accent, #2549c8); stroke-width: 2.5; }
+.chapter-film-node > rect { fill: var(--surface, #fffcf2); stroke: var(--border, #c7bea9); stroke-width: 1.5; }
+.chapter-film-node.is-active > rect { fill: #fff0be; stroke: var(--accent, #2549c8); stroke-width: 2; }
+.chapter-film-node > path { stroke: var(--border, #c7bea9); }
+.chapter-film-node-title { font-weight: 700; font-size: 18px; }
+.chapter-film-node-value { font-size: 18px; }
+.chapter-film-node-dot { fill: var(--stamp, #c14029); }
+.chapter-film-packet circle { fill: var(--accent, #2549c8); stroke: var(--surface, #fffcf2); stroke-width: 2; }
+.chapter-film-diagram-label { font-size: 17px; }
+.chapter-film-small { font-size: 14px; fill: var(--muted, #655f52)!important; }
+.chapter-film-large-label { font: 700 23px var(--serif, serif); }
+.chapter-film-number { font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums; fill: var(--accent, #2549c8)!important; }
+.chapter-film-token { font: 750 29px var(--serif, serif); }
+.chapter-film-bar-track { fill: var(--raised, #ece6d7); }
+.chapter-film-probability { fill: var(--accent, #2549c8); }
+.chapter-film-probability.is-picked { fill: var(--stamp, #c14029); }
+.chapter-film-interval { stroke: var(--surface, #fffcf2); stroke-width: 2; }
+.chapter-film-interval.interval-0 { fill: #dbe2ff; }
+.chapter-film-interval.interval-1 { fill: #eee4cc; }
+.chapter-film-interval.interval-2 { fill: #e4dbcc; }
+.chapter-film-interval.is-picked { stroke: var(--stamp, #c14029); stroke-width: 3; }
+.chapter-film-interval-label { font-size: 17px; }
+.chapter-film-cursor path { stroke: var(--stamp, #c14029); stroke-width: 2; fill: var(--stamp, #c14029); }
+.chapter-film-cursor text { font-size: 16px; font-weight: 700; fill: var(--stamp, #c14029); }
+.chapter-film-axis { stroke: var(--muted, #655f52); stroke-width: 1.5; fill: none; }
+.chapter-film-unit-circle { stroke: var(--border, #c7bea9); stroke-dasharray: 4 6; }
+.chapter-film-vector { fill: none; stroke: var(--muted, #655f52); stroke-width: 2; }
+.chapter-film-vector.is-query { stroke: var(--stamp, #c14029); stroke-width: 3; }
+.chapter-film-vector.is-nearest { stroke: var(--accent, #2549c8); stroke-width: 4; }
+.chapter-film-dot { fill: var(--accent, #2549c8); }
+.chapter-film-attention-query, .chapter-film-sum { fill: #fff0be; stroke: var(--accent, #2549c8); stroke-width: 2; }
+.chapter-film-attention-link { fill: none; stroke: var(--accent, #2549c8); opacity: .75; }
+.chapter-film-attention-link.is-masked { stroke: var(--border, #c7bea9); stroke-width: 1.5; stroke-dasharray: 4 5; }
+.chapter-film-attention-cell { fill: var(--raised, #ece6d7); stroke: var(--border, #c7bea9); }
+.chapter-film-attention-cell.is-masked { fill: transparent; stroke-dasharray: 4 5; }
+.chapter-film-loss-curve { fill: none; stroke: var(--accent, #2549c8); stroke-width: 3; }
+.chapter-film-old-weight { fill: var(--surface, #fffcf2); stroke: var(--muted, #655f52); stroke-width: 2; }
+.chapter-film-current-weight { fill: var(--stamp, #c14029); stroke: var(--surface, #fffcf2); stroke-width: 2; }
+.chapter-film-update-line { stroke: var(--stamp, #c14029); stroke-dasharray: 5 4; stroke-width: 2; }
+.chapter-film-equation { font: 700 35px var(--serif, serif); fill: var(--accent, #2549c8)!important; }
+.chapter-film-table-rule { stroke: var(--text, #242520); stroke-width: 2; }
+.chapter-film-evaluation-row { fill: var(--raised, #ece6d7); }
+.chapter-film-evaluation-row.is-fail { fill: #f7e2d6; }
+.chapter-film-evaluation-result { font-size: 18px; font-weight: 700; }
+.chapter-film-evaluation-result.is-pass { fill: var(--accent, #2549c8); }
+.chapter-film-evaluation-result.is-fail { fill: var(--stamp, #c14029); }
+.chapter-film-explanation { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 4px 0 10px; }
+.chapter-film-step-number { font: 750 32px/1.1 var(--serif, serif); color: var(--stamp, #c14029); }
+.chapter-film-explanation-label { display: block; font-size: 12px; color: var(--muted, #655f52); margin-bottom: 3px; }
+.chapter-film-why { font-size: 13px; margin-right: 9px; color: var(--muted, #655f52); font-weight: 650; }
+.chapter-film-explanation h4.ant-typography { margin: 0 0 5px; color: var(--text, #242520); font: 700 22px/1.4 var(--serif, serif); }
+.chapter-film-explanation .ant-typography { font-size: 16px; line-height: 1.7; margin-bottom: 0; }
+.chapter-film-evidence { margin: 0 0 8px 46px; padding: 8px 12px; border-left: 3px solid var(--accent, #2549c8); background: var(--bg, #f6f2e6); }
+.chapter-film-evidence > div { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3px; }
+.chapter-film-evidence dt { font-size: 14px; font-weight: 650; color: var(--accent, #2549c8); }
+.chapter-film-evidence dd { margin: 0; font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; white-space: pre-wrap; }
+.chapter-film-note.ant-typography { margin: 9px 0 0 46px; font-size: 12px; color: var(--muted, #655f52); line-height: 1.6; }
+.chapter-film-controls { padding: 7px 20px 9px; border-top: 1px solid var(--border, #c7bea9); background: var(--surface, #fffcf2); }
+.chapter-film-control-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.chapter-film-position { white-space: nowrap; font-size: 14px; color: var(--muted, #655f52); }
+.chapter-film-progress-labels { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; justify-content: flex-end; }
+.chapter-film-read-progress { color: var(--accent, #2549c8); font-size: 13px; white-space: nowrap; }
+.chapter-film-motion-note { color: var(--muted, #655f52); font-size: 12px; }
+.chapter-film.is-compact .chapter-film-heading { padding: 7px 12px 6px; }
+.chapter-film.is-compact .chapter-film-heading > div { gap: 2px 8px; }
+.chapter-film.is-compact .chapter-film-heading h3.ant-typography { font-size: 16px; line-height: 1.4; }
+.chapter-film.is-compact .chapter-film-heading .ant-tag { font-size: 11px; }
+.chapter-film.is-compact .chapter-film-goal { font-size: 12px; margin-top: 3px; }
+.chapter-film.is-compact .chapter-film-scenes { padding: 0 12px 6px; }
+.chapter-film.is-compact .chapter-film-scenes ol { gap: 4px; }
+.chapter-film.is-compact .chapter-film-scenes .ant-btn { height: 30px; font-size: 12px; padding-inline: 3px; gap: 3px; }
+.chapter-film.is-compact .chapter-film-scene-number, .chapter-film.is-compact .chapter-film-scene-read { font-size: 10px; }
+.chapter-film.is-compact .chapter-film-reading { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) 88px; grid-template-areas: "stage" "details"; gap: 3px; padding: 2px 12px 5px; }
+.chapter-film.is-compact .chapter-film-stage { padding: 0; min-height: 0; justify-items: center; }
+.chapter-film.is-compact .chapter-film-diagram { min-width: 0; max-width: none; max-height: none; }
+.chapter-film-diagram.is-compact-diagram .chapter-film-node-title { font-size: 21px; }
+.chapter-film-diagram.is-compact-diagram .chapter-film-node-value { font-size: 22px; }
+.chapter-film-diagram.is-compact-diagram .chapter-film-diagram-label { font-size: 19px; }
+.chapter-film-diagram.is-compact-diagram .chapter-film-large-label { font-size: 21px; }
+.chapter-film-diagram.is-compact-diagram .chapter-film-number { font-size: 23px; }
+.chapter-film-diagram.is-compact-diagram .chapter-film-token { font-size: 22px; }
+.chapter-film-diagram.is-compact-diagram .chapter-film-equation { font-size: 28px; }
+.chapter-film-diagram.is-compact-diagram .chapter-film-small { font-size: 17px; }
+.chapter-film.is-compact .chapter-film-details { border-top: 1px solid var(--border, #c7bea9); }
+.chapter-film.is-compact .chapter-film-explanation { padding-top: 5px; display: block; }
+.chapter-film.is-compact .chapter-film-step-number, .chapter-film.is-compact .chapter-film-explanation-label { display: none; }
+.chapter-film.is-compact .chapter-film-explanation h4.ant-typography { font-family: var(--sans, sans-serif); font-size: 14px; font-weight: 650; margin-bottom: 3px; }
+.chapter-film.is-compact .chapter-film-explanation .ant-typography { font-size: 14px; line-height: 1.6; }
+.chapter-film.is-compact .chapter-film-evidence, .chapter-film.is-compact .chapter-film-note.ant-typography { margin-left: 0; }
+.chapter-film.is-compact .chapter-film-evidence > div { grid-template-columns: 1fr; gap: 2px; }
+.chapter-film.is-compact .chapter-film-controls { padding: 5px 12px 6px; }
+.chapter-film.is-compact .chapter-film-controls .ant-btn { padding-inline: 9px; font-size: 13px; }
+.chapter-film.is-compact .chapter-film-position { font-size: 12px; }
+.chapter-film.is-compact .chapter-film-progress-labels { display: grid; gap: 0; }
+.chapter-film.is-compact .chapter-film-read-progress { font-size: 12px; }
+@media (max-width: 760px) {
+  .chapter-film-heading { padding: 12px 16px 10px; }
+  .chapter-film-reading { padding-inline: 16px; }
+  .chapter-film-controls { padding: 0 16px 10px; }
+  .chapter-film-control-row { flex-wrap: wrap; }
+  .chapter-film-evidence, .chapter-film-note.ant-typography { margin-left: 0; }
+  .chapter-film-evidence > div { grid-template-columns: 1fr; gap: 3px; }
+}
+@media (prefers-reduced-motion: reduce) { .chapter-film * { scroll-behavior: auto!important; } }

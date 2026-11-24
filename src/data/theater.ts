@@ -1,20 +1,41 @@
 export type TheaterSceneId = 'api-call' | 'sampling' | 'context' | 'tools' | 'agent';
 
+/** The catalogue supports only its known view and an optional chapter position. */
+export function catalogueReturnPath(raw: string | null): string | undefined {
+  if (!raw || !raw.startsWith('/') || raw.startsWith('//') || raw.includes('\\')) return undefined;
+  try {
+    const url = new URL(raw, 'https://spark-lab.invalid');
+    if (url.origin !== 'https://spark-lab.invalid') return undefined;
+    if (url.pathname === '/') return '/';
+    if (url.pathname !== '/explore') return undefined;
+    const query = new URLSearchParams();
+    if (url.searchParams.get('view') === 'relations') query.set('view', 'relations');
+    const at = url.searchParams.get('at');
+    if (at && /^[a-z][a-z0-9-]{0,63}$/.test(at)) query.set('at', at);
+    return '/explore' + (query.size ? `?${query}` : '');
+  } catch { return undefined; }
+}
+
 /** Preserve only the known local learning destinations and their supported state. */
 export function theaterReturnPath(raw: string | null): string {
   if (!raw || !raw.startsWith('/') || raw.startsWith('//') || raw.includes('\\')) return '/explore';
   try {
     const url = new URL(raw, 'https://spark-lab.invalid');
     if (url.origin !== 'https://spark-lab.invalid') return '/explore';
-    if (url.pathname === '/') return '/';
+    if (url.pathname === '/' || url.pathname === '/explore') return catalogueReturnPath(raw) ?? '/explore';
     const query = new URLSearchParams();
-    if (/^\/lab\/(first-call|context|tools|agent-loop)$/.test(url.pathname)) {
+    if (/^\/(?:lab|learn)\/[a-z][a-z0-9-]{0,63}$/.test(url.pathname)) {
       const replay = url.searchParams.get('replay');
       if (replay && /^[a-zA-Z0-9_-]{1,128}$/.test(replay)) query.set('replay', replay);
-      if (url.searchParams.get('entry') === 'story') query.set('entry', 'story');
-    } else if (url.pathname === '/explore') {
-      const at = url.searchParams.get('at');
-      if (at && /^(first-call|context|tools|agent-loop|tokens|embeddings|rag|memory|evaluation|capstone|transformer|training|mcp|multi-agent)$/.test(at)) query.set('at', at);
+      if (url.searchParams.get('entry') === 'story') {
+        query.set('entry', 'story');
+        const people = url.searchParams.get('people');
+        if (people && /^[1-9][0-9]?$/.test(people)) query.set('people', people);
+      }
+      const frame = url.searchParams.get('frame');
+      if (frame && /^[a-z][a-z0-9-]{0,63}$/.test(frame)) query.set('frame', frame);
+      const origin = catalogueReturnPath(url.searchParams.get('returnTo'));
+      if (origin) query.set('returnTo', origin);
     } else return '/explore';
     return url.pathname + (query.size ? `?${query}` : '');
   } catch { return '/explore'; }
@@ -46,7 +67,7 @@ export const comparisonGuides: Record<TheaterSceneId, { task: string; unchanged:
 
 export function apiCallFrames(): TheaterFrame[] {
   return [
-    { phase: 'input', title: '准备 messages', narration: 'A、B 把完全相同的问题放进 messages。显示开关没有修改这份请求输入。' },
+    { phase: 'input', title: '把问题放进消息列表', narration: '在实操里，你把问题写进 prompt。接入真实 API 时，服务端会把这段文字装进 messages 发给模型。这里 A、B 使用同一个问题。' },
     { phase: 'request', title: '发送请求', narration: '应用把模型标识和消息组成请求体，发给模型服务。这里展示一种兼容接口格式，不真正联网。' },
     { phase: 'model', title: '等待模型服务', narration: 'await 等待响应返回。等待状态只表示请求尚未结束，不代表能够看到服务内部怎样计算。' },
     { phase: 'answer', title: '解析响应', narration: 'lab.model 把服务响应整理成统一的 text 与 toolCalls。两组拿到同一份 response；B 关闭显示只影响页面输出，不会删除这些返回值。' },

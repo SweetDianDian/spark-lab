@@ -1,15 +1,19 @@
 # 火花实验室 · Spark Lab
 
-一个通过真实代码执行理解 LLM 和 Agent 的学习系统。全站采用浅灰蓝背景、白色内容面板和深色文字，以桌面学习为重点。围绕同一个学习助手，通过“先跑一次 → 只改一处 → 再跑对比 → 解释结果”理解调用、上下文、工具与循环。
+一本可以看原理动图、运行代码的桌面实验手册。首页从朋友聚餐结账开始，14 章按照“看懂数据怎样变化 → 运行代码 → 只改一个条件 → 对照结果”连接模型调用、模型内部机制与助手工程。
 
-## 启动
+## 安装与启动
+
+首次使用请看[完整安装启动教程](./INSTALL.md)。它包含 Windows、macOS 和 Linux 的安装步骤、第一次运行实验、可选的真实 API 配置，以及端口占用和 Python 加载问题的排查方法。
 
 ```sh
-npm install
+git clone https://github.com/SweetDianDian/spark-lab.git
+cd spark-lab
+npm ci
 npm run dev
 ```
 
-打开 http://127.0.0.1:5190 。`predev` 会把安装的 Pyodide 运行资源复制到 `public/pyodide/`，Python 不依赖第三方 CDN。需要 Node.js 20.19+ / 22.12+。
+使用 Node.js 24 和 npm。服务启动后打开[本地实验室](http://127.0.0.1:5190/)，保留终端窗口。教学模式可以直接运行，Python 运行资源会从已安装的 Pyodide 复制到项目目录。
 
 macOS 也可以双击项目目录里的 `启动实验室.command`。这是本地服务，需要保留运行它的终端窗口；停止进程或重启电脑后，需重新启动。`dev` 和 `preview` 固定使用 5190，端口占用时明确报错，不会悄悄换到其他地址。
 
@@ -21,35 +25,41 @@ npm test
 
 ## 本版内容
 
-- 项目入口：用真实教学代码预览“查 RAG 资料 → 计算 → 总结”的学习助手；开始第一节或继续已有进度。首页试运行不会冒充课程完成记录。
-- 课程路径：默认只展示四节主线及其能力递进，节点用直线箭头连接。后续应用、模型原理和 14 课先修关系另有视图；每节明确问题、动手任务、证据和独立学习状态。
-- 五个原理对照：显示/隐藏响应、带入/移除背景、仅发出请求/实际执行工具、充足/不足的循环轮数、固定随机落点下的温度分布变化。A、B 同屏，明确固定条件、变化条件和观察结果，原始数据可展开核对。
-- 步骤解释支持前后步进、自动讲解和恢复未看部分。API 响应与上下文答案是标明的教学示例；参数校验、乘法和采样分布在页面实际计算。
-- 原理按实际可见的步骤记录浏览；跳到末尾不会补齐中间，后台页面会暂停。浏览记录与实操证据独立，不能把看过演示当成掌握或完成实验。
-- 完整实验：第一次调用、上下文、工具调用、Agent 循环。四章均提供 TypeScript、JavaScript、Python。
-- Token 采样有交互原理，代码实验尚未开放；其余九个后续章节提供概念概要，原理演示和实操分别标记未开放。
-- Monaco 编辑器；代码在可终止的浏览器 Worker 中实际执行。TS 经编译，Python 经本地 Pyodide。
-- 两次运行对照保留本人最近两次实际执行的输入、输出、代码与运行身份；失败与停止也如实展示。重复代码、语言/模式变化和未重跑草稿均有说明，历史回放不会加入新对照。
-- 教学模型为确定性规则模拟；工具计算和代码控制流实际执行。search 使用内置教学资料，非互联网搜索。
-- 每次模型/工具调用、输出、失败均产生事件，驱动节点图与代码定位。
-- 运行快照保存在当前浏览器 localStorage（最近 15 条），回放只读记录、不产生 API 请求。保存代码与语言、模式快照，避免后来编辑改变历史。
-- 实验往返原理页保留代码、运行与历史回放身份；完成实验时先保存证据，再更新进度。修改代码后需要重新运行验证；历史跑通与最近一次失败分别显示。
-- 理解题作为解释结果时的自查，不再用点选答案锁住实验。保存通过记录仍要求当前代码有有效运行证据，记录不等同于掌握知识。
-- 学习笔记、完成进度、讲解布局和响应式页面。
+- 首页可设置聚餐人数，每人 23 元，沿“准备问题 → 提出算式 → 计算器执行 → 展示金额”检查本次运行。带着人数进入代码，可以修改同一段程序；首页试跑不冒充课程实操记录。
+- 完整目录按同一份课程顺序展示全部 14 章，每章都有“看动图”和“练代码”入口。`/learn/:lessonId` 与 `/lab/:lessonId` 是同一章的两个视图，保留章节位置、前后章及返回目录的位置。先修关系可单独展开。
+- 第 1–4 章：LLM 调用、上下文、工具调用、Agent 循环。第 5–7 章：Token 与采样、Transformer、训练与适配。第 8–13 章：向量检索、RAG、状态恢复、MCP、评测、多角色工作流。第 14 章用带引用的活动费用报告收束。
+- 每章动图按具名步骤展示输入、处理与结果。点击某一步即可对照示例语句，再带着该步进入编辑器。实操先运行、定位要改的变量、再次运行，然后对照两份真实输出与输入变化；按实际显示的帧保存浏览记录。跳到最后不会补齐中间帧，切到后台暂停。动图是教学样本，不会伪装成真实模型请求或内部推理。
+- 14 章均提供 TypeScript、JavaScript、Python 实操。前四章通过 `lab.model` 和 `lab.tool` 学习调用；后十章执行本地机制实验，包括小词表采样、单头 Attention、单参数训练、词频检索、引用组装、状态序列化和结构化交接。
+- 后十章的范围明确：向量来自手写词频特征；RAG 用原文摘录代替模型生成；记忆在一次运行内模拟恢复；MCP 是本地消息子集；多 Agent 是两个角色函数；综合报告使用固定资料。它们不自动连接嵌入模型、数据库、远端 MCP 服务或自主 Agent。
+- 保留五个扩展 A/B 对照：显示/隐藏响应、带入/移除背景、请求/执行工具、循环轮数、温度与固定随机落点。只为确实注册的五个场景提供入口；深度对照浏览、章内动图浏览、代码实操分别记录。
+- Monaco 编辑器中的代码在可终止的浏览器 Worker 内执行；TS 经编译，Python 使用本地 Pyodide。代码与执行步骤并排，点击步骤检查实际输入和结果，定位对应代码。
+- 两次运行对照保留最近两次实际执行的输入、输出、代码、语言和模式，失败与停止也如实展示；历史回放不会产生新的执行证据。运行快照保存在当前浏览器 localStorage，最多保留最近 15 条。
+- 教学模型采用确定性规则，工具计算与代码控制流真实执行。内置 search 使用教学资料，非互联网搜索。动图浏览不代表掌握；代码“跑通”依据实际记录，旧手动完成标记不会被显示成一次真实运行。
+- 代码修改后需要重新运行验证；历史跑通与最近失败分别可见。理解题用于解释结果时自查，保存通过记录仍要求当前代码存在有效执行证据。
+- 本地学习笔记、历史回放、桌面固定布局与独立滚动区域。
 
 ## 界面组件
 
+<details>
+<summary>首页插画与生成提示词</summary>
+
+聚餐插画使用内置 ImageGen 生成，交付文件为 `public/art/dinner-print.webp`。账单数字、算式与金额由页面根据实际输入和执行事件绘制。
+
+Illustration-story. A horizontal, hand-pulled 3-colour risograph illustration for a Chinese independent creative coding zine. At a busy Chinese neighborhood noodle shop after a meal, two young adult friends humorously settle the bill: one in a striped shirt leans across the little round dining table holding out a long curling paper receipt, the other dramatically presses a button on an oversized old pocket calculator. Awkward affectionate gestures and crooked smiles, lived-in chopsticks, a couple of bowls and steam, two wonky stools. Cocked perspective, loose vigorous black brush contours and dry ink hatching, broad solid ultramarine shapes, little vermilion marks, a little butter yellow, lots of the warm off-white paper showing. Expressive handmade editorial spot drawing, like an artist's observation from life; witty, not cute 3D mascots. Strong clear silhouette, entire figures and most of table within a wide 3:2 composition, floating spot on unmarked pale warm cream paper, no enclosing frame, no shadows beyond pen hatching. No letters, words, numbers, speech bubbles, logos or signage. Make a single finished artwork, not a website mockup.
+
+</details>
+
 - Ant Design 6.7.2：全站按钮、选择器、数字输入、开关、滑块、卡片、标签页、折叠面板、步骤、提示与弹窗。`src/ui-theme.ts` 统一颜色、字号、间距及圆角，`ConfigProvider` 提供中文与主题上下文。
-- React Flow 13.0.3：`LearningDiagram` 统一承载课程关系、原理流程和实际执行节点，支持节点选择、键盘操作、箭头与总览缩放。
+- 全部课程按七条学习线路呈现，箭头和「另需」标出 14 章的直接先修关系。选择一章可单独查看它的前后章。原理流程图使用 React Flow，工作区的可选执行步骤使用 Ant Design Steps。
 - Monaco：继续作为 TS/JS/Python 代码编辑器，支持执行节点定位。
 - 页面 CSS 只保留布局、内容排版和代码高亮。业务组件中不再直接写原生 button/select/input/textarea/dialog/details/summary/progress/table 控件；组件库内部生成的语义 HTML 正常保留。
-- 桌面采用固定导航与明确滚区：原理目录/正文分别滚动，标题和播放条固定；实验的 Monaco 与右侧观察区分别滚动，运行、标签页和保存操作固定。右侧“输出”容纳执行记录，“任务”容纳自查与进度说明。滚到边缘不向外层传递；交互图内滚轮缩放，图外滚动页面内容。
+- 桌面导航固定。原理目录和正文分别滚动，标题和播放条固定。实验的代码编辑器与右侧执行观察区也可以独立滚动，滚到边缘时保留另一侧的阅读位置。
 
 ## 接入真实模型
 
 将 `.env.example` 复制为未跟踪的 `.env`，填写 `AI_API_KEY`、`AI_MODEL`、`AI_BASE_URL`，重启服务。支持 OpenAI、DeepSeek、通义千问固定兼容端点。浏览器通过同源 `/api/model` 请求网关，密钥只在服务端使用。`/api/status` 只表示配置是否齐全，不保证凭证或模型可用；首次实际请求才验证连接。
 
-本版真实模型返回完整响应，不提供真实 token 流。工具循环用明确标记的数据消息携带结果；这是一层教学适配，不等价于所有提供商的原生 tool-role 会话协议。没有真实 API 凭证时，所有实验仍可以在教学模式下运行。
+前四章可调用真实模型，返回完整响应，不提供真实 token 流。工具循环用明确标记的数据消息携带结果；这是一层教学适配，不等价于所有提供商的原生 tool-role 会话协议。后十章运行本地机制算法，不因切换模式而变成远端模型实验。没有真实 API 凭证时，所有实验仍可运行。
 
 ## 执行与使用边界
 
@@ -65,14 +75,21 @@ JS/TS 当前不支持静态 import/export；Python 不提供完整系统包与�
 src/App.tsx                 路由、统一外壳、学习记录与API连接
 src/learning-theme.css      全站统一视觉变量与公共界面
 src/components/Landing.tsx  项目学习入口与真实教学试运行
-src/components/KnowledgeMap.tsx 课程先修关系与真实学习状态
+src/components/KnowledgeMap.tsx 14章目录、先修关系与独立学习记录
+src/components/CourseRail.tsx 首页四站入门与完整课程入口
+src/components/ChapterReader.tsx 章内动图、代码切换与前后章
+src/components/ChapterFilm.tsx 原理数据变化与逐帧展示
 src/components/PrincipleTheater.tsx 条件对照、逐步解释与浏览进度
 src/components/Workspace.tsx 两次真实运行对照、执行检查与回放
 src/data/journey.ts         四节课的问题、改动任务与项目贡献
-src/data/lessons.ts         14 章课程与四章三语言模板
+src/data/lessons.ts         14章概念、预测题与三语言实操入口
+src/data/advanced-labs.ts   后十章可执行的本地机制实验
+src/data/chapter-films.ts   14章教学动图、证据与范围说明
 src/data/theater.ts         教学分镜、参数校验和机制计算
-src/data/learning-path.ts   知识目标、先修与原理/实操可用性
-src/lib/learning-state.ts   原理浏览与实操证据的独立进度
+src/data/learning-path.ts   统一课程顺序、分组、学习目标与先修
+src/lib/learning-state.ts   旧深度A/B浏览与实操证据
+src/lib/chapter-reading.ts  章内动图逐帧浏览记录
+src/lib/chapter-navigation.ts 章内导航与返回位置
 src/runtime/               Worker、Python桥、工具与模拟模型
 src/lib/                   本地存储与学习验收
 server/                    模型网关、Vite适配、Worker部署入口
@@ -81,8 +98,10 @@ tests/                     工具、模型网关与学习验收测试
 
 ## 验证与后续
 
-构建与自动测试见 `npm run build`、`npm test`。真实浏览器已验证 12 个首批 starter、三语言异常与取消、工具错误、调用上限、40 秒自动超时。网关仅使用受控上游响应验证，尚未使用真实付费凭证完成提供商端到端验收。
+构建与自动测试见 `npm run build`、`npm test`。测试覆盖课程运行证据、工具与网关边界、动图机制与浏览记录；修改实验算法后应同时检查三语言结果和失败分支。网关使用受控上游响应验证，尚未使用真实付费凭证完成提供商端到端验收。
 
-后续优先实现 RAG 与模型原理实验、原生工具会话协议、真实流式事件，以及独立执行服务。当前没有用户账户、云同步、自动视频导出或生产级沙箱。
+后续可接入真实嵌入与检索服务、持久状态、完整 MCP 传输、原生工具会话、真实流式事件和独立执行服务。当前没有用户账户、云同步、自动视频导出或生产级沙箱。
 
-Sites 私有注册服务在本次开发中网络不可达，因此当前交付为本地版本，没有已确认的线上部署。未确认 Site 身份前不要重复注册；应先查询是否已有 `spark-agent-lab`。
+- 新章节先在 `src/data/learning-path.ts` 登记稳定的 `lessonId`、顺序与先修关系；目录和前后章复用 `LEARNING_PATH` / `chapterPath`，不要另写页码或导航链接清单。
+- 以同一 `lessonId` 添加 `chapter-films.ts` 动图、`lessons.ts` / `advanced-labs.ts` 三语代码与边界说明，在 `practice-guides.ts` 将每个分镜绑定到各语言的代表语句、单变量改法与观察点，并在 `progress.ts` 校验本章实际步骤、数据传递与最终输出；自定义步骤记录 `{ input, result }`。
+- 提交前运行 `npm test` 与 `npm run build`；`chapter-reader` / `chapter-films` 测试检查全章覆盖和衔接，`advanced-labs` 测试实际执行 TS、JS、Pyodide 的基线及改参，新增章应同步加入这些覆盖检查。

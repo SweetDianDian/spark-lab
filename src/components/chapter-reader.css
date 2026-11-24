@@ -1,0 +1,28 @@
+.chapter-reader{height:100%;min-height:0;min-width:0;display:flex;flex-direction:column;gap:10px}
+.chapter-toolbar{flex:none;display:grid;grid-template-columns:minmax(190px,1fr) auto minmax(260px,1fr);align-items:center;gap:12px;padding:0 0 10px;border-bottom:1px solid var(--border)}
+.chapter-picker,.chapter-paging,.chapter-comparison,.chapter-to-practice,.chapter-to-practice>div{display:flex;align-items:center;gap:8px;min-width:0}
+.chapter-picker .ant-select{width:clamp(180px,20vw,340px)}
+.chapter-paging{justify-content:flex-end}
+.chapter-next{background:var(--surface);border-color:var(--text)}
+.chapter-toolbar .ant-segmented{background:#e8e1d1;padding:4px}
+.chapter-toolbar .ant-segmented-item-selected{color:var(--accent);font-weight:700}
+.chapter-toolbar .ant-segmented-item-icon svg{vertical-align:-.16em}
+.chapter-workspace,.chapter-film-page{flex:1;min-height:0;min-width:0;overflow:hidden}
+.chapter-film-page{display:flex;flex-direction:column;gap:10px}
+.chapter-film-page>.chapter-film{flex:1;min-height:0}
+.chapter-to-practice{flex:none;gap:16px;border-top:1px solid var(--border);padding:9px 2px 0}
+.chapter-to-practice>div{flex:1;gap:12px}
+.chapter-to-practice strong{white-space:nowrap;color:var(--stamp)}
+.chapter-to-practice>div>span{color:var(--muted);font-size:14px}
+.chapter-comparison{color:var(--accent);font-weight:600}
+.presenting .chapter-toolbar{display:none}
+.chapter-reader .lab-context-row{margin:0}
+.chapter-reader .developer-lab{gap:7px}
+.chapter-instruction{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chapter-reader .lab-panel-scroll[data-scroll-region="principle"]{overflow:hidden;padding:6px}
+.chapter-reader .lab-panel-scroll[data-scroll-region="principle"]>.chapter-film{height:100%}
+.chapter-leadin{flex:none;margin:0;color:var(--muted);font-size:14px;padding:2px 0 2px 12px;border-left:3px solid var(--stamp)}
+.chapter-picker-option{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.chapter-picker-option small{font-weight:400;color:var(--muted);font-size:12px}
+.chapter-to-practice>div>code{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:14px/1.6 'SFMono-Regular',Consolas,monospace;color:var(--text)}
+.chapter-workspace .chapter-film.is-compact .chapter-film-goal{display:none}

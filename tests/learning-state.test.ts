@@ -95,15 +95,16 @@ test('an early-stop branch cannot stand in for Agent final answer steps', () => 
   assert.equal(readLearningState('agent-loop').status, 'studying');
 });
 
-test('sampling belongs to tokens; an unopened practice does not block available theory', () => {
+test('sampling stays attached to tokens while its new code practice needs independent evidence', () => {
   markPrincipleSeen('sampling', 'input');
   const tokens = readLearningState('tokens');
   assert.equal(tokens.status, 'studying');
   assert.equal(tokens.principleAvailable, true);
-  assert.equal(tokens.practice.available, false);
-  assert.equal(tokens.remaining.needsPassingRun, false);
+  assert.equal(tokens.practice.available, true);
+  assert.equal(tokens.remaining.needsPassingRun, true);
   assert.equal(readLearningState('first-call').principle?.viewedCount, 0);
-  assert.equal(recordLessonRun('tokens', run()), false);
+  assert.equal(recordLessonRun('tokens', run()), true);
+  assert.equal(readLearningState('tokens').practice.passed, false);
 });
 
 test('actual unsuccessful outcomes are recorded without granting a pass', () => {

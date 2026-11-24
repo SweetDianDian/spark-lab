@@ -1,9 +1,9 @@
 .cinema-root { color: var(--text); background: var(--bg); padding: 20px 32px; height: 100%; min-height: 0; min-width: 1100px; overflow: hidden; font-size: 16px; line-height: 1.65; }
-.cinema-layout { display: grid; grid-template-columns: 250px minmax(0,1fr); gap: 28px; height: 100%; min-height: 0; max-width: 1420px; margin: auto; overflow: hidden; }
+.cinema-layout { display: grid; grid-template-columns: clamp(235px,17vw,330px) minmax(0,1fr); gap: 28px; height: 100%; min-height: 0; overflow: hidden; }
 .cinema-sidebar { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto minmax(0,1fr); padding-right: 16px; border-right: 1px solid var(--border); overflow: hidden; }
 .cinema-sidebar-head { padding-right: 8px; border-bottom: 1px solid var(--border); }
 .cinema-sidebar-scroll { min-height: 0; padding: 8px 8px 12px 0; overflow-x: hidden; overflow-y: auto; }
-.cinema-sidebar-scroll, .cinema-content-scroll, .cinema-data-details pre { overscroll-behavior: contain; scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: #aebbd0 #eef2f7; }
+.cinema-sidebar-scroll, .cinema-content-scroll, .cinema-data-details pre { overscroll-behavior: contain; scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: #b8ac92 #f6f2e6; }
 .cinema-sidebar-scroll:focus-visible, .cinema-content-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .cinema-back { margin-bottom: 16px; }
 .cinema-knowledge-select { display: grid; gap: 8px; }
@@ -65,6 +65,66 @@
 .cinema-interval-reason { font-size: 14px; margin: 0!important; font-variant-numeric: tabular-nums; }
 .cinema-sampled-sentence { margin: 9px 0 0!important; font-size: 18px; }
 .cinema-sampled-sentence > span { color: var(--accent); margin-left: 4px; }
+
+/* Paper, ink and margin notes; the four existing scroll regions stay intact. */
+.cinema-root { background: var(--bg, #f6f2e6); color: var(--text, #242520); }
+.cinema-sidebar { border-right-color: #bfb49d; }
+.cinema-sidebar-head { border-bottom: 2px solid var(--text, #242520); }
+.cinema-back { padding-inline: 0; margin-bottom: 14px; }
+.cinema-knowledge-select > .ant-typography { font: 700 19px/1.4 var(--serif, "Songti SC", "STSong", serif); color: var(--text, #242520); }
+.cinema-learning-progress { padding: 14px 0 15px; }
+.cinema-learning-progress > .ant-typography:first-child { color: var(--accent, #2549c8); font-weight: 600; }
+.cinema-step-directory .ant-collapse-header { font-weight: 600; color: var(--text, #242520)!important; }
+.cinema-directory-tabs .cinema-directory-rule { visibility: hidden; }
+.cinema-directory-tabs .cinema-directory-page { padding: 9px 10px; margin-bottom: 5px; border: 1px solid #d6cdb9; border-left: 3px solid #c4b99f; border-radius: 0 5px 5px 0; background: #f0eadc; }
+.cinema-directory-tabs .ant-steps-item-process .cinema-directory-page { background: var(--surface, #fffcf2); border-color: #b6b6c8; border-left: 3px solid var(--accent, #2549c8); box-shadow: 3px 3px 0 #d8d0bd66; }
+.cinema-directory-tabs .ant-steps-item-process .cinema-directory-page-title { color: var(--accent, #2549c8); }
+.cinema-directory-tabs .cinema-directory-page-title { font-size: 15px; line-height: 1.55; font-weight: 550; }
+.cinema-directory-tabs .cinema-directory-page-note { font-size: 13px; line-height: 1.5; }
+.cinema-progress-note { color: var(--muted, #655f52); }
+.cinema-heading { padding-bottom: 15px; }
+.cinema-heading-meta { display: flex; gap: 11px; align-items: center; margin-bottom: 7px; }
+.cinema-heading-meta > .ant-typography { color: var(--text, #242520); font-size: 14px; }
+.cinema-manual-stamp.ant-tag { margin: 0; color: var(--stamp, #c14029); border: 1px solid var(--stamp, #c14029); background: transparent; border-radius: 2px; padding: 1px 7px; font-family: var(--serif, "Songti SC", serif); font-weight: 700; letter-spacing: .08em; }
+.cinema-heading h3.ant-typography { font: 800 clamp(27px, 2.5vw, 35px)/1.3 var(--serif, "Songti SC", "STSong", serif); letter-spacing: -.035em; color: var(--accent, #2549c8); margin: 0 0 7px!important; }
+.cinema-heading > .ant-typography { color: var(--muted, #655f52); line-height: 1.6; }
+.cinema-screen.ant-card { background: var(--surface, #fffcf2); border: 1px solid #bfb49d; border-top: 2px solid var(--text, #242520); border-radius: 3px; }
+.cinema-content-scroll { padding: 20px 23px; }
+.cinema-task > .ant-typography { color: var(--stamp, #c14029); font: 700 18px/1.5 var(--serif, "Songti SC", serif); }
+.cinema-task p { color: var(--text, #242520); }
+.cinema-intervention { padding: 13px 15px; border-left: 3px solid var(--stamp, #c14029); background: #fff0c9; }
+.cinema-constant { padding-left: 17px; font-size: 14px; }
+.cinema-observation .ant-alert-info { background: #f4efdf; border-color: #d5c9a9; }
+.cinema-observation .ant-alert-title { color: var(--text, #242520); font-weight: 600; }
+.cinema-case.ant-card { border-radius: 3px; }
+.cinema-case-baseline.ant-card { background: var(--surface, #fffcf2); border-color: #bfb49d; }
+.cinema-case-baseline > .ant-card-head { border-bottom: 1px solid #c7bea9; background: #f3eedf; }
+.cinema-case-trial.ant-card { background: #fff8e2; border-color: #d6b565; border-left: 3px solid var(--stamp, #c14029); }
+.cinema-case-trial > .ant-card-head { background: var(--highlight, #ffe3a0); border-bottom: 1px solid #d6b565; }
+.cinema-case-title { padding: 6px 0; gap: 3px; }
+.cinema-case-title > .ant-typography:first-child { color: var(--accent, #2549c8); font-size: 14px; font-weight: 600; }
+.cinema-case-trial .cinema-case-title > .ant-typography:first-child { color: var(--stamp, #c14029); }
+.cinema-case-title > .ant-typography:last-child { color: var(--text, #242520); font: 700 20px/1.5 var(--serif, "Songti SC", "STSong", serif); }
+.cinema-case-label.ant-tag { margin: 0; background: transparent; border-color: #b5aa93; color: #655f52; border-radius: 2px; font-size: 12px; }
+.cinema-case-trial .cinema-case-label.ant-tag { border-color: #c6a563; color: #8e442b; }
+.cinema-output-surface.ant-card { background: #fffdf6; border-color: #d7cebb; }
+.cinema-output-surface > .ant-card-head { background: #f5f1e7; }
+.cinema-case-trial .cinema-output-surface > .ant-card-head { background: #fff1c9; }
+.cinema-output-surface h2.cinema-calculated-value { color: var(--accent, #2549c8); font-size: 44px; font-weight: 650; letter-spacing: -.03em; }
+.cinema-case-trial .cinema-calculated-value { color: var(--stamp, #c14029)!important; }
+.cinema-code-line { font-size: 14px; }
+.cinema-why { border-top: 1px solid #c7bea9; }
+.cinema-why > .ant-typography { font: 700 19px/1.5 var(--serif, "Songti SC", serif); color: var(--stamp, #c14029); }
+.cinema-explanation { border-top: 2px solid var(--text, #242520); }
+.cinema-explanation-title > .ant-typography:first-child { font: 700 21px/1.4 var(--serif, "Songti SC", serif); color: var(--accent, #2549c8); }
+.cinema-subtitle h5.ant-typography { font: 700 21px/1.5 var(--serif, "Songti SC", serif); color: var(--text, #242520); }
+.cinema-player.ant-card { background: var(--surface, #fffcf2); border-color: #bfb49d; border-top: 2px solid var(--text, #242520); border-radius: 3px; }
+.cinema-player > .ant-card-body { padding: 10px 14px; }
+.cinema-afterword { border-top: 1px dashed #c7bea9; padding-top: 14px; }
+.cinema-sampling-table .ant-table-thead > tr > th:nth-child(2) { background: #f0eadb; color: var(--accent, #2549c8); }
+.cinema-sampling-table .ant-table-thead > tr > th:nth-child(3) { background: var(--highlight, #ffe3a0); color: var(--stamp, #c14029); }
+.cinema-sampling-table .ant-table-tbody > tr > td:nth-child(3) { background: #fff8e2; }
+.cinema-case-trial .cinema-sampled-sentence > span { color: var(--stamp, #c14029); }
 @media (prefers-reduced-motion: reduce) {
   .cinema-root *, .cinema-root *:before { animation: none!important; transition: none!important; scroll-behavior: auto!important; }
 }
