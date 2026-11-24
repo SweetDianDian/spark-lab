@@ -1,0 +1,28 @@
+:root{color-scheme:light;--bg:#f7f9fc;--surface:#fff;--raised:#eef2f7;--text:#253046;--muted:#627086;--border:#dfe5ee;--accent:#4361ee}
+.spark-app{height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);color:var(--text)}
+.lab-header{height:76px;flex-shrink:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:36px;border-bottom:1px solid var(--border);padding:0 42px;background:var(--bg);z-index:10}
+.lab-header .lab-brand{justify-self:start;letter-spacing:.08em;font-size:16px;height:44px}
+.lab-brand-slash{font-weight:400;color:var(--muted);padding:0 6px}
+.lab-header>nav{min-width:360px}
+.lab-header .ant-menu-horizontal{background:transparent;border-bottom:0;justify-content:center;line-height:74px}
+.lab-connect{justify-self:end}
+.lab-main{width:100%;min-width:0;min-height:0;flex:1;overflow:hidden}
+.lab-main-scroll{overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-color:#b9c5d8 transparent;scrollbar-width:thin}
+.lab-main-workspace{padding:16px 24px;max-width:1600px;margin:0 auto}
+.lab-main-theater{overflow:hidden}
+.lab-loading{min-height:65vh;display:flex;align-items:center;justify-content:center}
+.lab-not-found{padding:80px 32px}
+.records-page{max-width:1140px;margin:auto;padding:44px 32px}
+.records-heading{margin-bottom:24px}
+.records-heading .ant-typography{margin-bottom:8px}
+.records-grid{display:flex;flex-direction:column;gap:14px}
+.records-empty{padding:50px 24px}
+.records-note-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px}
+.records-note-layout .ant-menu{border-inline-end:0}
+.records-note-title{margin-bottom:16px}
+.records-footnote{margin-top:20px}
+.api-connection-content{padding-top:16px}
+.api-setup-code{padding:18px;background:var(--bg);border-radius:8px;color:var(--text);font-size:14px;line-height:1.9}
+.ant-modal .ant-modal-body{max-height:calc(100dvh - 220px);overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.ant-select-dropdown .rc-virtual-list-holder,.ant-select-dropdown .rc-virtual-list,.records-page textarea{overscroll-behavior:contain}
+.presenting .lab-header{display:none}

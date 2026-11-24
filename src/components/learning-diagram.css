@@ -1,0 +1,7 @@
+.learning-diagram{width:100%;min-width:0;border-radius:12px;overflow:hidden;background:var(--bg)}
+.learning-diagram .react-flow{--xy-background-color:transparent;--xy-node-border-radius:12px;--xy-controls-button-background-color:#fff;--xy-controls-button-color:#253046;--xy-controls-button-border-color:#dfe5ee;--xy-edge-label-background-color:#f7f9fc}
+.learning-diagram .react-flow__node-learning{border:0;background:transparent}
+.learning-diagram .react-flow__handle{width:6px;height:6px;border:1px solid #fff;background:#9aaac5;pointer-events:none}
+.learning-diagram .react-flow__node:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:12px}
+.learning-diagram .diagram-node-card .ant-typography{line-height:1.65;overflow-wrap:anywhere}
+.learning-diagram .react-flow__attribution{font-size:10px;background:#f7f9fce6}

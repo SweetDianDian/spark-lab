@@ -1,0 +1,44 @@
+/* Fixed-height workbench. Controls and panel appearance remain Ant Design's. */
+.developer-lab.experiment-page{width:100%;max-width:1600px;height:100%;min-height:0;margin:0 auto;padding:0;display:flex;flex-direction:column;overflow:hidden;gap:12px}
+.developer-lab .lab-fixed-heading{flex:none;min-width:0}
+.developer-lab .lab-context-row{min-height:32px;margin-bottom:6px}
+.developer-lab .lab-heading-row{min-width:0;min-height:34px;margin-bottom:4px}
+.developer-lab .lab-lesson-question{min-width:0;flex:1;margin:0!important}
+.developer-lab .lab-progress-line{flex-shrink:0}
+.developer-lab .lab-task-strip{min-width:0;min-height:28px}
+.developer-lab .lab-task-summary{min-width:0;flex:1;margin:0!important}
+.developer-lab .lab-workbench{flex:1;min-height:0;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;overflow:hidden}
+.developer-lab .lab-code-panel,.developer-lab .lab-observation-panel{display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;overflow:hidden}
+.developer-lab .lab-code-panel>.ant-card-head{flex:none}
+.developer-lab .lab-code-panel .lab-code-body,.developer-lab .lab-observation-panel .lab-observation-body{display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;overflow:hidden;padding:0}
+.developer-lab .lab-run-toolbar{flex:none;padding:10px 16px}
+.developer-lab .lab-editor{position:relative;flex:1;min-height:0;min-width:0;overflow:hidden;overscroll-behavior:contain}
+.developer-lab .lab-observation-tabs{flex:1;min-height:0;min-width:0;overflow:hidden}
+.developer-lab .lab-observation-tabs>.ant-tabs-nav{flex:none;padding:0 16px;margin:0}
+.developer-lab .lab-observation-tabs>.ant-tabs-body-holder{flex:1;min-height:0;min-width:0;overflow:hidden}
+.developer-lab .lab-observation-tabs>.ant-tabs-body-holder>.ant-tabs-body{height:100%;min-height:0;min-width:0;overflow:hidden}
+.developer-lab .lab-observation-tabs>.ant-tabs-body-holder>.ant-tabs-body>.ant-tabs-content{height:100%;min-height:0;min-width:0;overflow:hidden}
+.developer-lab .lab-panel-scroll{height:100%;min-height:0;overflow-x:hidden;overflow-y:auto;padding:16px;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#98a7be #edf1f7;outline-offset:-3px}
+.developer-lab .lab-panel-scroll::-webkit-scrollbar,.developer-lab .lab-evidence-code::-webkit-scrollbar,.developer-lab .lab-attempt-value pre::-webkit-scrollbar{width:10px;height:10px}
+.developer-lab .lab-panel-scroll::-webkit-scrollbar-track,.developer-lab .lab-evidence-code::-webkit-scrollbar-track,.developer-lab .lab-attempt-value pre::-webkit-scrollbar-track{background:#edf1f7}
+.developer-lab .lab-panel-scroll::-webkit-scrollbar-thumb,.developer-lab .lab-evidence-code::-webkit-scrollbar-thumb,.developer-lab .lab-attempt-value pre::-webkit-scrollbar-thumb{background:#98a7be;border:2px solid #edf1f7;border-radius:6px}
+.developer-lab .lab-observation-footer{flex:none;min-width:0;padding:10px 16px;border-top:1px solid var(--border,#dfe5ee)}
+.developer-lab .lab-evidence-status{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.developer-lab .workspace-save-error{margin-bottom:10px}
+.developer-lab .lab-comparison-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.developer-lab .lab-attempt{min-width:0}
+.developer-lab .lab-comparison-note{margin-bottom:18px}
+.developer-lab .lab-attempt-meta{font-size:12px;overflow-wrap:anywhere}
+.developer-lab .lab-attempt-value{margin-top:16px}
+.developer-lab .lab-attempt-value pre,.developer-lab .lab-evidence-code{white-space:pre-wrap;overflow-wrap:anywhere;font-family:'SFMono-Regular',Consolas,monospace;font-size:14px;line-height:1.8;max-height:230px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#98a7be #edf1f7;margin:8px 0 0}
+.developer-lab .lab-attempt-value pre{max-height:180px}
+.developer-lab .lab-observe{margin-top:16px}
+.developer-lab .lab-current-task{display:grid;grid-template-columns:80px minmax(0,1fr);gap:12px;margin-top:18px}
+.developer-lab .lab-timeline{min-width:0}
+.developer-lab .event-counter{position:static;white-space:nowrap;font-variant-numeric:tabular-nums}
+.developer-lab .lab-prediction{margin-top:18px}
+.developer-lab .code-active-line{background:#4361ee0d!important}
+.developer-lab .code-active-glyph{background:#4361ee!important}
+.developer-lab .editor-loading{display:flex;align-items:center;justify-content:center;gap:12px;height:100%}
+.presenting .spark-app .lab-header{display:none}
+.presenting .developer-lab .lab-heading-row,.presenting .developer-lab .lab-task-strip{display:none}

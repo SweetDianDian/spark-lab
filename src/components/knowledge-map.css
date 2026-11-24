@@ -1,0 +1,25 @@
+.atlas-root {
+  max-width: 1440px;
+  min-height: 100%;
+  margin: auto;
+  padding: 36px 40px 28px;
+}
+.atlas-header { display: flex; align-items: center; justify-content: space-between; gap: 40px; margin-bottom: 24px; }
+.atlas-header h1.ant-typography { margin-top: 8px; margin-bottom: 10px; font-size: 30px; }
+.atlas-header .ant-typography { line-height: 1.75; }
+.atlas-summary { min-width: 250px; display: grid; gap: 5px; }
+.atlas-layout { display: grid; gap: 24px; min-width: 0; }
+.atlas-diagram-panel { min-width: 0; scroll-margin-top: 24px; }
+.atlas-node-content { display: grid; gap: 10px; text-align: left; }
+.atlas-node-content > .ant-tag { justify-self: start; }
+.atlas-node-content .atlas-node-question { margin-bottom: 0; font-size: 16px; line-height: 1.7; }
+.atlas-node-content .atlas-node-contribution { margin-top: 4px; margin-bottom: 0; font-size: 16px; line-height: 1.7; }
+.atlas-detail { scroll-margin-top: 24px; }
+.atlas-detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, .65fr); gap: 40px; align-items: start; }
+.atlas-detail-content, .atlas-detail-next { min-width: 0; }
+.atlas-detail-content .ant-typography, .atlas-detail-next .ant-typography { line-height: 1.85; }
+.atlas-objective { margin-top: 6px; font-size: 17px; }
+.atlas-actions { margin-top: 22px; }
+.atlas-observations { margin: 0; padding-left: 22px; line-height: 1.85; }
+.atlas-observations li + li { margin-top: 10px; }
+.atlas-evidence-note { margin-top: 24px; }
